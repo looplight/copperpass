@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.schedule tr {
+	cursor: pointer
+}
+.weekend {
+   background-color: #F5F5F5;
+}
+.selected_date {
+	background-color: #ff80aa;	
+}
