@@ -8,6 +8,7 @@ import './index.css';
 
 
 ReactDOM.render(
-  <ScheduleListRow today={moment()} />,
+
+  <ScheduleListRow eventTypes="mouseup" today={moment() } />,
   document.getElementById('root')
 );
