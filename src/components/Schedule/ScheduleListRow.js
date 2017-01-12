@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import moment 				 from 'moment';
 import ScheduleListDay 		 from './ScheduleListDay';
-import on_click_outside      from 'react-onclickoutside';
+import ReactDOM 			 from 'react-dom';
 const is_weekend = date => {
 	return date.day() % 6 === 0;
 }
@@ -26,9 +26,26 @@ class ScheduleListRow extends Component {
 	}
 
 	componentDidMount() {
+		document.addEventListener('mouseup', this.handle_click_outside.bind(this), true);
 		this.setState({
 			days: this._build_columns(this.props.today)
 		});
+	}
+
+	componentWillUnmount() {
+	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);
+	}
+
+	handle_click_outside(event) {
+		const domNode = ReactDOM.findDOMNode(this);
+	    if ((!domNode || !domNode.contains(event.target))) {
+	    	console.log('Around the outside!')
+			this.setState( (prev_state, props) => {
+				return {
+					is_mouse_down:false
+				}
+			});	    	
+	    }		
 	}
 
 	_build_columns(today) {
@@ -106,18 +123,13 @@ class ScheduleListRow extends Component {
 
 	_handle_mouse_up() {
 		this.setState( (prev_state, props) => {
+			// create new event if we have a selected range
+			
 			return {
 				is_mouse_down:false
 			}
 		});
 	};
-	handleClickOutside() {
-		this.setState( (prev_state, props) => {
-			return {
-				is_mouse_down:false
-			}
-		});
-  	}
 
   	render() {
   		const days = this.state.days.map((day) => {
@@ -139,7 +151,7 @@ class ScheduleListRow extends Component {
   	)}
 }
 
-export default on_click_outside(ScheduleListRow);
+export default ScheduleListRow;
 
 
 

@@ -11,7 +11,7 @@ describe('<ScheduleListRow/>', () => {
 
 	const my_date =  moment('2016-01-01');
 	it('renders without blowing up',  () => {
-		shallow(<ScheduleListRow today={my_date}/>);
+		mount(<ScheduleListRow today={my_date}/>);
 	});
 	
 	it('should start with an empty list of days', () => {
