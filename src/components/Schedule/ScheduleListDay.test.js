@@ -10,9 +10,9 @@ describe('<ScheduleListDay/>', () => {
 
 	it('calls the click handler callback when clicked', () => {
 		const mock_handler = jest.fn();
-		const wrapper = shallow(<ScheduleListDay handle_mouse_click={mock_handler} />);
+		const wrapper = shallow(<ScheduleListDay handle_mouse_down={mock_handler} />);
 		const found = wrapper.find('td').first();
-		found.simulate('click');
+		found.simulate('mousedown');
 		expect(mock_handler).toHaveBeenCalled();
 	});
 

@@ -9,10 +9,10 @@ const is_weekend = date => {
 class ScheduleListRow extends Component {
 	constructor(props) {
 		super(props);
-		this._handle_mouse_click = this._handle_mouse_click.bind(this);
-		this._handle_mouse_enter = this._handle_mouse_enter.bind(this)
-		this._handle_mouse_down  = this._handle_mouse_down.bind(this);
-		this._handle_mouse_up    = this._handle_mouse_up.bind(this);
+		this._handle_mouse_down 		 = this._handle_mouse_down.bind(this);
+		this._handle_mouse_enter 		 = this._handle_mouse_enter.bind(this)
+		this._handle_mouse_up    		 = this._handle_mouse_up.bind(this);
+		this._handle_mouse_leave		 = this._handle_mouse_leave.bind(this);
 		this.state = {
       		is_mouse_down: false,
       		start_selection: undefined,
@@ -26,20 +26,23 @@ class ScheduleListRow extends Component {
 	}
 
 	componentDidMount() {
-		document.addEventListener('mouseup', this.handle_click_outside.bind(this), true);
+		document.addEventListener('mouseup', this.handle_click_outside.bind(this), true);	
 		this.setState({
 			days: this._build_columns(this.props.today)
 		});
 	}
 
 	componentWillUnmount() {
-	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);
+	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);		
 	}
 
 	handle_click_outside(event) {
 		const domNode = ReactDOM.findDOMNode(this);
+		console.log('domNode',domNode);
+		console.log('event.target',event.target);
 	    if ((!domNode || !domNode.contains(event.target))) {
 	    	console.log('Around the outside!')
+	    	
 			this.setState( (prev_state, props) => {
 				return {
 					is_mouse_down:false
@@ -56,16 +59,18 @@ class ScheduleListRow extends Component {
 			//let full_day_text = day.format('YYYY-MM-DD');
 			const day_text = day.format('D');
 
-			//TODO(daniel): refactor tout this duplication
+			//TODO(daniel): refactor out this duplication
 			if(is_weekend(day)) {
 				days.push({
 					id:i,
 					is_weekend:true,
 					display_text:day_text,
 					is_selected:false,
-					handle_mouse_click:this._handle_mouse_click,
+					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
-					handle_mouse_down: this._handle_mouse_down
+					handle_mouse_down: this._handle_mouse_down,
+					handle_mouse_up: this._handle_mouse_up,
+					
 				});
 			} else {
 				days.push({
@@ -73,16 +78,19 @@ class ScheduleListRow extends Component {
 					is_weekend:false,
 					display_text:day_text,
 					is_selected:false,
-					handle_mouse_click:this._handle_mouse_click,
+					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
-					handle_mouse_down: this._handle_mouse_down
+					handle_mouse_down: this._handle_mouse_down,
+					handle_mouse_up: this._handle_mouse_up,
+					
 				});
 			}
 		}
 		return days;		
 	}
 
-	_handle_mouse_click(display_text) {
+	_handle_mouse_down(display_text, event) {
+		event.preventDefault();
 		this.setState((prev_state, props) => {
 			const days_copy = prev_state.days.slice();
 			const found = days_copy.find((day) => {
@@ -92,7 +100,8 @@ class ScheduleListRow extends Component {
 			found.is_selected = true;
 			
 			return {
-				days: days_copy
+				days: days_copy,
+				is_mouse_down:true,
 			}
 		});		
 	};
@@ -108,23 +117,27 @@ class ScheduleListRow extends Component {
 			found.is_selected = true;
 			
 			return {
-				days: days_copy
+				days: days_copy,
 			}
 		});				
 	}	
-	_handle_mouse_down(event) {
-		event.preventDefault();
+	_handle_mouse_leave(display_text, event) {
+		if(!this.state.is_mouse_down) return
 		this.setState( (prev_state, props) => {
+			const days_copy = this.state.days.slice();
+			const selected_days = days_copy.filter(day => day.is_selected === true);
+
+			selected_days.map(day => day.is_selected = false);
+			
 			return {
-				is_mouse_down: true
+				days:days_copy
 			}
-		});
-	};
+		});		
+	}
 
 	_handle_mouse_up() {
 		this.setState( (prev_state, props) => {
 			// create new event if we have a selected range
-			
 			return {
 				is_mouse_down:false
 			}
@@ -138,20 +151,19 @@ class ScheduleListRow extends Component {
 	  			is_weekend={day.is_weekend}
 	  			display_text={day.display_text}
 	  			is_selected={day.is_selected}
-	  			handle_mouse_click={day.handle_mouse_click}
+	  			handle_mouse_down={day.handle_mouse_click}
 	  			handle_mouse_enter={day.handle_mouse_enter}
+	  			handle_mouse_up={day.handle_mouse_up}
+	  			handle_mouse_leave={day.handle_mouse_leave}
   			/>
   		});
   		return (
   			<table className="table schedule">
   				<tbody>
-  					<tr onMouseDown={this._handle_mouse_down} onMouseUp={this._handle_mouse_up}>{days}</tr>
+  					<tr  onMouseLeave={this._handle_mouse_leave}>{days}</tr>
   				</tbody>
   			</table>
   	)}
 }
 
 export default ScheduleListRow;
-
-
-

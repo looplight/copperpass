@@ -40,13 +40,13 @@ describe('<ScheduleListRow/>', () => {
 
 	});
 
-	it('passes _handle_mouse_click to all ScheduleListDay components', () => {		
+	it('passes _handle_mouse_down to all ScheduleListDay components', () => {		
 		const my_date =  moment('2016-01-01');
 	    const wrapper = mount(<ScheduleListRow today={my_date}/>);
-	    const handler = wrapper.instance()._handle_mouse_click;
+	    const handler = wrapper.instance()._handle_mouse_down;
 
 	    const days = wrapper.find(ScheduleListDay).forEach((day) => {
-	    	expect(day.props().handle_mouse_click).toEqual(handler)
+	    	expect(day.props().handle_mouse_down).toEqual(handler)
 	    });
 	});
 
@@ -60,8 +60,27 @@ describe('<ScheduleListRow/>', () => {
 	    });
 	});
 
+	it('_handle_mouse_down sets selected state to true', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		
+		wrapper.setState({
+			days: [{
+				id:2,
+				is_selected:false,
+				display_text:'display text'
+			}]
+		});
+
+		wrapper.instance()._handle_mouse_down('display text', {preventDefault: () =>{}});
+		console.log(wrapper.state().days[0].is_selected);
+		expect(wrapper.state().days[0].is_selected).toEqual(true);
+		wrapper.instance()._handle_mouse_leave();
+		expect(wrapper.state().days[0].is_selected).toEqual(false);
+	});
+
 	//TODO(daneil): write toggle test so that we can toggle selected on and off
-	it('_handle_mouse_click sets selected state to true', () => {
+	it('_handle_mouse_down sets selected state to true 2', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
 		
@@ -73,11 +92,12 @@ describe('<ScheduleListRow/>', () => {
 			}]
 		});
 
-		wrapper.instance()._handle_mouse_click('display text');
+		wrapper.instance()._handle_mouse_down('display text', {preventDefault:() =>{}});
+		console.log(wrapper.state().days[0].is_selected);
 		expect(wrapper.state().days[0].is_selected).toEqual(true);
 	});
 
-	it('_handle_mouse_click handles day not found', () => {
+	it('_handle_mouse_down handles day not found', () => {
 		const my_date = moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
 		var mock_state = {
@@ -88,7 +108,7 @@ describe('<ScheduleListRow/>', () => {
 			}]
 		}
 		wrapper.setState(mock_state);
-		wrapper.instance()._handle_mouse_click('display');
+		wrapper.instance()._handle_mouse_down('display', {preventDefault:() =>{}});
 		expect(wrapper.state().days).toEqual(mock_state.days);
 	});
 
@@ -96,12 +116,12 @@ describe('<ScheduleListRow/>', () => {
 		const my_date =  moment('2016-01-01');
 		// When a method is called with an event listener in a React component, the original method is always called and not the mocked one.
 		// Handle this by using prototype
-		const spy = ScheduleListRow.prototype._handle_mouse_click = jest.fn(function() {
+		const spy = ScheduleListRow.prototype._handle_mouse_down = jest.fn(function() {
 			//console.log('Taking over the world!');
 		});
 		const wrapper = mount(<ScheduleListRow today={my_date}/>);
 
-		wrapper.find(ScheduleListDay).first().simulate('click');
+		wrapper.find(ScheduleListDay).first().simulate('mousedown');
 		expect(spy).toHaveBeenCalled();
 	});
 
@@ -112,22 +132,5 @@ describe('<ScheduleListRow/>', () => {
 		const number_of_weekend_days = wrapper.find(ScheduleListDay).find('.weekend').length;
 
 		expect(number_of_weekend_days).toEqual(10);
-	});
-
-	it.skip('sets state to is_selected when mouseEnter if mouseDown', () => {
-		const my_date =  moment('2016-01-01');
-		const wrapper = mount(<ScheduleListRow today={my_date}/>);
-		var mock_state = {
-			days: [{
-				id:1,
-				is_selected:false,
-				is_mouse_down:true,
-				display_text:'display text'
-			}]
-		}
-		wrapper.setState(mock_state);		
-		wrapper.isntance()._handle_mouse_enter()
-
-		expect(wrapper.state().days[0].is_selected).toEqual(true);
 	});
 });
