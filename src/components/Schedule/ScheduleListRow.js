@@ -13,8 +13,10 @@ class ScheduleListRow extends Component {
 		this._handle_mouse_enter 		 = this._handle_mouse_enter.bind(this)
 		this._handle_mouse_up    		 = this._handle_mouse_up.bind(this);
 		this._handle_mouse_leave		 = this._handle_mouse_leave.bind(this);
+
+		//NOTE(daniel): maybe some of these should be received via props?
 		this.state = {
-      		is_mouse_down: false,
+      		is_mouse_down: false, // is selecting
       		start_selection: undefined,
       		end_selection: undefined,
       		events: [
@@ -65,6 +67,7 @@ class ScheduleListRow extends Component {
 					id:i,
 					is_weekend:true,
 					display_text:day_text,
+					date: day.format('YYYY-MM-DD'),
 					is_selected:false,
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
@@ -77,6 +80,7 @@ class ScheduleListRow extends Component {
 					id:i,
 					is_weekend:false,
 					display_text:day_text,
+					date: day.format('YYYY-MM-DD'),
 					is_selected:false,
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
@@ -89,7 +93,8 @@ class ScheduleListRow extends Component {
 		return days;		
 	}
 
-	_handle_mouse_down(display_text, event) {
+	_handle_mouse_down(display_text, date, event) {
+		console.log('clicked date',date);
 		event.preventDefault();
 		this.setState((prev_state, props) => {
 			const days_copy = prev_state.days.slice();
@@ -135,11 +140,13 @@ class ScheduleListRow extends Component {
 		});		
 	}
 
-	_handle_mouse_up() {
+	_handle_mouse_up(day) {
 		this.setState( (prev_state, props) => {
+			// open awesome popup
 			// create new event if we have a selected range
 			return {
-				is_mouse_down:false
+				is_mouse_down:false,
+				is_open:true
 			}
 		});
 	};
@@ -150,6 +157,7 @@ class ScheduleListRow extends Component {
 	  			key={day.id}
 	  			is_weekend={day.is_weekend}
 	  			display_text={day.display_text}
+	  			date={day.date}
 	  			is_selected={day.is_selected}
 	  			handle_mouse_down={day.handle_mouse_click}
 	  			handle_mouse_enter={day.handle_mouse_enter}

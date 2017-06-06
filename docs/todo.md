@@ -4,3 +4,8 @@
 [ ] Add property "selected" to objects in state.data
 [ ] Write a unit-test for toggle functionality 
 [ ] Implement toggle on mouse click
+
+2017-06-01
+[ ] Show alert when mouse_up event over ScheduleListDay
+[ ] Print selected range when mouse up
+[ ] Display modal when mouse up

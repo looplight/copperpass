@@ -72,7 +72,7 @@ describe('<ScheduleListRow/>', () => {
 			}]
 		});
 
-		wrapper.instance()._handle_mouse_down('display text', {preventDefault: () =>{}});
+		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault: () =>{}});
 		console.log(wrapper.state().days[0].is_selected);
 		expect(wrapper.state().days[0].is_selected).toEqual(true);
 		wrapper.instance()._handle_mouse_leave();
@@ -92,7 +92,7 @@ describe('<ScheduleListRow/>', () => {
 			}]
 		});
 
-		wrapper.instance()._handle_mouse_down('display text', {preventDefault:() =>{}});
+		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault:() =>{}});
 		console.log(wrapper.state().days[0].is_selected);
 		expect(wrapper.state().days[0].is_selected).toEqual(true);
 	});
@@ -108,7 +108,7 @@ describe('<ScheduleListRow/>', () => {
 			}]
 		}
 		wrapper.setState(mock_state);
-		wrapper.instance()._handle_mouse_down('display', {preventDefault:() =>{}});
+		wrapper.instance()._handle_mouse_down('display', '2017-11-11', {preventDefault:() =>{}});
 		expect(wrapper.state().days).toEqual(mock_state.days);
 	});
 

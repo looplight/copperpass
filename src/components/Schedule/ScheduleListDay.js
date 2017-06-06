@@ -1,8 +1,8 @@
 import React 			from 'react';
 
-const ScheduleListDay = ({display_text, is_weekend, is_selected, handle_mouse_down, handle_mouse_enter, handle_mouse_up}) => {
+const ScheduleListDay = ({display_text, date, is_weekend, is_selected, handle_mouse_down, handle_mouse_enter, handle_mouse_up}) => {
 	const _handle_mouse_down = (event) => {
-		handle_mouse_down(display_text, event);
+		handle_mouse_down(display_text, date, event);
 	};
 	const _handle_mouse_enter = (event) => {
 		handle_mouse_enter(display_text, event); 
@@ -19,7 +19,7 @@ const ScheduleListDay = ({display_text, is_weekend, is_selected, handle_mouse_do
 	};
 
 	const className = build_class();
-	return <td className={className} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up}>{display_text}</td>;
+	return <td data-date={date} className={className} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up}>{display_text}</td>;
 };
 
 export default ScheduleListDay;
