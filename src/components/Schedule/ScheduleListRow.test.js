@@ -60,7 +60,113 @@ describe('<ScheduleListRow/>', () => {
 	    });
 	});
 
-	it('_handle_mouse_down sets selected state to true', () => {
+	it('handles_mouse_enter sets selected state to true when not already selected', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			is_mouse_down:true,
+			days: [{
+				id:2,
+				is_selected:false,
+				display_text:'display text'
+			}]
+		});
+		wrapper.instance()._handle_mouse_enter('display text', '2017-11-11', {preventDefault: () =>{}});
+		expect(wrapper.state().days[0].is_selected).toEqual(true);
+	});
+	it('handles_mouse_enter sets selected state to false when already selected (and when starting on a non selected day)', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			is_mouse_down:true,
+			days: [{
+				id:2,
+				is_selected:false,
+				display_text:'display text 1'
+			},
+			{
+				id:3,
+				is_selected:true,
+				display_text:'display text 2'
+			}]
+		});
+		wrapper.instance()._handle_mouse_down('display text 1', '2017-11-10', {preventDefault: () =>{}});
+		wrapper.instance()._handle_mouse_enter('display text 2', '2017-11-11', {preventDefault: () =>{}});
+		expect(wrapper.state().days[1].is_selected).toEqual(true);
+	});	
+	it('handles_mouse_enter sets selected state to false when already selected (and when starting on a selected day)', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			is_mouse_down:true,
+			days: [{
+				id:2,
+				is_selected:true,
+				display_text:'display text 1'
+			},
+			{
+				id:3,
+				is_selected:true,
+				display_text:'display text 2'
+			}]
+		});
+		wrapper.instance()._handle_mouse_down('display text 1', '2017-11-10', {preventDefault: () =>{}});
+		wrapper.instance()._handle_mouse_enter('display text 2', '2017-11-11', {preventDefault: () =>{}});
+		expect(wrapper.state().days[1].is_selected).toEqual(false);
+	});	
+
+	it('never selects again when mouse enter and starting on selected day', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);		
+		wrapper.setState({
+			is_mouse_down:true,
+			days: [{
+				id:2,
+				is_selected:true,
+				display_text:'display text 1'
+			},
+			{
+				id:3,
+				is_selected:false,
+				display_text:'display text 2'
+			}]
+		});
+		wrapper.instance()._handle_mouse_down('display text 1', '2017-11-10', {preventDefault: () =>{}});
+		wrapper.instance()._handle_mouse_enter('display text 2', '2017-11-11', {preventDefault: () =>{}});
+
+		expect(wrapper.state().days[1].is_selected).toEqual(false);		
+	});
+
+	it('sets is_starting_on_selected_day correctly when starting on selected day', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			is_starting_on_selected_day: undefined,
+			days: [{
+				id:2,
+				is_selected:true,
+				display_text:'display text'
+			}]
+		});
+		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault: () =>{}});
+		expect(wrapper.state().is_starting_on_selected_day).toEqual(true);
+	});
+	it('sets is_starting_on_selected_day correctly when starting on a non selected day', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			is_starting_on_selected_day: undefined,
+			days: [{
+				id:2,
+				is_selected:false,
+				display_text:'display text'
+			}]
+		});
+		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault: () =>{}});
+		expect(wrapper.state().is_starting_on_selected_day).toEqual(false);
+	});	
+
+	it('_handle_mouse_down sets selected state to true when not already selected', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
 		
@@ -73,28 +179,27 @@ describe('<ScheduleListRow/>', () => {
 		});
 
 		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault: () =>{}});
-		console.log(wrapper.state().days[0].is_selected);
 		expect(wrapper.state().days[0].is_selected).toEqual(true);
 		wrapper.instance()._handle_mouse_leave();
 		expect(wrapper.state().days[0].is_selected).toEqual(false);
 	});
 
 	//TODO(daneil): write toggle test so that we can toggle selected on and off
-	it('_handle_mouse_down sets selected state to true 2', () => {
+	it('_handle_mouse_down sets selected state to false when already selected', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
 		
 		wrapper.setState({
 			days: [{
 				id:1,
-				is_selected:false,
+				is_selected:true,
 				display_text:'display text'
 			}]
 		});
 
 		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault:() =>{}});
 		console.log(wrapper.state().days[0].is_selected);
-		expect(wrapper.state().days[0].is_selected).toEqual(true);
+		expect(wrapper.state().days[0].is_selected).toEqual(false);
 	});
 
 	it('_handle_mouse_down handles day not found', () => {

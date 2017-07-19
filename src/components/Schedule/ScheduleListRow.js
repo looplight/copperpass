@@ -17,6 +17,7 @@ class ScheduleListRow extends Component {
 		//NOTE(daniel): maybe some of these should be received via props?
 		this.state = {
       		is_mouse_down: false, // is selecting
+      		is_starting_on_selected_day: undefined,
       		start_selection: undefined,
       		end_selection: undefined,
       		events: [
@@ -102,11 +103,12 @@ class ScheduleListRow extends Component {
 				return day.display_text === display_text;
 			});
 			if(!found) return prev_state;
-			found.is_selected = true;
+			found.is_selected = !found.is_selected;
 			
 			return {
 				days: days_copy,
 				is_mouse_down:true,
+				is_starting_on_selected_day: !found.is_selected // invert it again so that we get the orignal state of the selection
 			}
 		});		
 	};
@@ -119,8 +121,16 @@ class ScheduleListRow extends Component {
 				return day.display_text === display_text;
 			});
 			if(!found) return prev_state;
-			found.is_selected = true;
 			
+			if(!this.state.is_starting_on_selected_day && found.is_selected) {
+				found.is_selected = true;	
+			} 
+			else if(this.state.is_starting_on_selected_day && found.is_selected) {
+				found.is_selected = false;
+			}
+			else {
+				found.is_selected = !this.state.is_starting_on_selected_day && !found.is_selected ? !found.is_selected : found.is_selected;
+			}
 			return {
 				days: days_copy,
 			}

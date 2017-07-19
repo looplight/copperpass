@@ -5,7 +5,10 @@
 [ ] Write a unit-test for toggle functionality 
 [ ] Implement toggle on mouse click
 
-2017-06-01
 [ ] Show alert when mouse_up event over ScheduleListDay
+[ ] Start with a 'fake' selected range
+[ ] Deselection
 [ ] Print selected range when mouse up
+[ ] Add button component to each row for saving range
+
 [ ] Display modal when mouse up
