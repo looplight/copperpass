@@ -7,7 +7,7 @@
 
 [ ] Show alert when mouse_up event over ScheduleListDay
 [ ] Start with a 'fake' selected range
-[ ] Deselection
+[x] Deselection
 [ ] Print selected range when mouse up
 [ ] Add button component to each row for saving range
 
