@@ -190,14 +190,21 @@ describe('<ScheduleListRow/>', () => {
 		wrapper.setState({
 			days: [{
 				id:1,
-				is_selected:true,
-				display_text:'display text'
+				is_selected:false,
+				is_event:false,
+				display_text:'display text 1'
+			},
+			{
+				id:2,
+				is_selected:false,
+				is_event:true,
+				display_text:'display text 2'				
 			}]
 		});
 
-		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault:() =>{}});
-		console.log(wrapper.state().days[0].is_selected);
-		expect(wrapper.state().days[0].is_selected).toEqual(false);
+		wrapper.instance()._handle_mouse_down('display text 1', '2017-11-11', {preventDefault:() =>{}});
+		wrapper.instance()._handle_mouse_enter('display text 2', '2017-11-11', {preventDefault: () =>{}});
+		expect(wrapper.state().days[1].is_selected).toEqual(false);
 	});
 
 	it('marks a day as an event if date is in an event range', () => {
@@ -230,7 +237,7 @@ describe('<ScheduleListRow/>', () => {
 		expect(wrapper.state().days[0].is_selected).toEqual(false);
 	});
 
-	it.skip('draging on event days does not set them to is_selected', () => {
+	it('draging on event days does not set them to is_selected', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
 		wrapper.setState({

@@ -130,7 +130,7 @@ class ScheduleListRow extends Component {
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
-			if(!found) return prev_state;
+			if(!found || found.is_event) return prev_state;
 			
 			if(!this.state.is_starting_on_selected_day && found.is_selected) {
 				found.is_selected = true;	
