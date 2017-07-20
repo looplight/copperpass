@@ -5,6 +5,7 @@ import ScheduleListRow 		from './ScheduleListRow';
 import ScheduleListDay		from './ScheduleListDay';
 import ReactTestUtils 		from 'react-addons-test-utils'
 import { shallow, mount } 	from 'enzyme';
+import _ 					from 'lodash';
 import sinon from 'sinon';
 
 describe('<ScheduleListRow/>', () => {
@@ -180,11 +181,8 @@ describe('<ScheduleListRow/>', () => {
 
 		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault: () =>{}});
 		expect(wrapper.state().days[0].is_selected).toEqual(true);
-		wrapper.instance()._handle_mouse_leave();
-		expect(wrapper.state().days[0].is_selected).toEqual(false);
 	});
 
-	//TODO(daneil): write toggle test so that we can toggle selected on and off
 	it('_handle_mouse_down sets selected state to false when already selected', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
@@ -201,6 +199,51 @@ describe('<ScheduleListRow/>', () => {
 		console.log(wrapper.state().days[0].is_selected);
 		expect(wrapper.state().days[0].is_selected).toEqual(false);
 	});
+
+	it('marks a day as an event if date is in an event range', () => {
+		//NOTE(daniel): we might want to check that all dates in the range are set
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			events: [
+			{start: '2016-01-15', end: '2016-01-25'}],		
+		});
+		wrapper.setState({
+			days: wrapper.instance()._build_columns(my_date)
+		});
+		const event_date = _.find(wrapper.state().days, day => day.date === '2016-01-20');
+		expect(event_date.is_event).toEqual(true)
+	});
+
+	it('clicking event days does not set them to is_selected', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			days: [{
+				id:1,
+				is_selected:false,
+				is_event:true,
+				display_text:'display text'
+			}]
+		});
+		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault:() =>{}});
+		expect(wrapper.state().days[0].is_selected).toEqual(false);
+	});
+
+	it.skip('draging on event days does not set them to is_selected', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		wrapper.setState({
+			days: [{
+				id:1,
+				is_selected:false,
+				is_event:true,
+				display_text:'display text'
+			}]
+		});
+		wrapper.instance()._handle_mouse_down('display text', '2017-11-11', {preventDefault:() =>{}});
+		expect(wrapper.state().days[0].is_selected).toEqual(false);
+	});	
 
 	it('_handle_mouse_down handles day not found', () => {
 		const my_date = moment('2016-01-01');

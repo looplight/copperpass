@@ -2,9 +2,7 @@ import React, { Component }  from 'react';
 import moment 				 from 'moment';
 import ScheduleListDay 		 from './ScheduleListDay';
 import ReactDOM 			 from 'react-dom';
-const is_weekend = date => {
-	return date.day() % 6 === 0;
-}
+import _ 					 from 'lodash';
 
 class ScheduleListRow extends Component {
 	constructor(props) {
@@ -21,7 +19,8 @@ class ScheduleListRow extends Component {
       		start_selection: undefined,
       		end_selection: undefined,
       		events: [
-      			{start:'2017-01-01', end:'2017-01-05'}
+      			{start:'2017-07-24', end:'2017-07-28'},
+      			{start:'2017-08-07', end:'2017-08-09'}
       		],
       		days: [],
       		selected_days: []
@@ -55,6 +54,16 @@ class ScheduleListRow extends Component {
 	}
 
 	_build_columns(today) {
+		const is_weekend = date => {
+			return date.day() % 6 === 0;
+		}
+
+		const is_event = date => {
+			//check state.events for a range containing 'date'
+			const found_in_event = _.find(this.state.events, event => moment(date.format('YYYY-MM-DD')).isBetween(moment(event.start), moment(event.end), null, '[]'));
+			return !!found_in_event;
+		}
+		// id day is in an event range, mark it as an event with correct class and event id (?)
 		const days_in_month = today.daysInMonth();
 		const days = [];
 		for(let i = 0; i < days_in_month; i++) {
@@ -70,6 +79,7 @@ class ScheduleListRow extends Component {
 					display_text:day_text,
 					date: day.format('YYYY-MM-DD'),
 					is_selected:false,
+					is_event: is_event(day),
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
 					handle_mouse_down: this._handle_mouse_down,
@@ -83,6 +93,7 @@ class ScheduleListRow extends Component {
 					display_text:day_text,
 					date: day.format('YYYY-MM-DD'),
 					is_selected:false,
+					is_event: is_event(day),
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
 					handle_mouse_down: this._handle_mouse_down,
@@ -95,14 +106,13 @@ class ScheduleListRow extends Component {
 	}
 
 	_handle_mouse_down(display_text, date, event) {
-		console.log('clicked date',date);
 		event.preventDefault();
 		this.setState((prev_state, props) => {
 			const days_copy = prev_state.days.slice();
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
-			if(!found) return prev_state;
+			if(!found || found.is_event) return prev_state;
 			found.is_selected = !found.is_selected;
 			
 			return {
@@ -114,7 +124,7 @@ class ScheduleListRow extends Component {
 	};
 
 	_handle_mouse_enter(display_text) {
-		if(!this.state.is_mouse_down) return
+		if(!this.state.is_mouse_down) return;
 		this.setState((prev_state, props) => {
 			const days_copy = prev_state.days.slice();
 			const found = days_copy.find((day) => {
@@ -137,7 +147,8 @@ class ScheduleListRow extends Component {
 		});				
 	}	
 	_handle_mouse_leave(display_text, event) {
-		if(!this.state.is_mouse_down) return
+		return;
+		if(!this.state.is_mouse_down) return;
 		this.setState( (prev_state, props) => {
 			const days_copy = this.state.days.slice();
 			const selected_days = days_copy.filter(day => day.is_selected === true);
@@ -169,12 +180,14 @@ class ScheduleListRow extends Component {
 	  			display_text={day.display_text}
 	  			date={day.date}
 	  			is_selected={day.is_selected}
+	  			is_event={day.is_event}
 	  			handle_mouse_down={day.handle_mouse_click}
 	  			handle_mouse_enter={day.handle_mouse_enter}
 	  			handle_mouse_up={day.handle_mouse_up}
 	  			handle_mouse_leave={day.handle_mouse_leave}
   			/>
   		});
+  		// onMouseLeave is bypassed for now
   		return (
   			<table className="table schedule">
   				<tbody>

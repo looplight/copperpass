@@ -30,4 +30,8 @@ describe('<ScheduleListDay/>', () => {
 		const wrapper = shallow(<ScheduleListDay is_selected={true}/>);
 		expect(wrapper.find('td').first().hasClass('selected')).toEqual(true);
 	});	
+	it('sets correct class if is_event', () => {
+		const wrapper = shallow(<ScheduleListDay is_event={true}/>);
+		expect(wrapper.find('td').first().hasClass('event')).toEqual(true);
+	});		
 });

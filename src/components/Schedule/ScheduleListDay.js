@@ -1,6 +1,6 @@
 import React 			from 'react';
 
-const ScheduleListDay = ({display_text, date, is_weekend, is_selected, handle_mouse_down, handle_mouse_enter, handle_mouse_up}) => {
+const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event, handle_mouse_down, handle_mouse_enter, handle_mouse_up}) => {
 	const _handle_mouse_down = (event) => {
 		handle_mouse_down(display_text, date, event);
 	};
@@ -12,9 +12,9 @@ const ScheduleListDay = ({display_text, date, is_weekend, is_selected, handle_mo
 	};
 	const build_class = () => {
 		let className = '';
-		if(is_weekend) className  += ' weekend';
-		if(is_selected) className += ' selected';
-		
+		if(is_weekend)  className  += ' weekend';
+		if(is_selected) className  += ' selected';
+		if(is_event)    className  += ' event';
 		return className;
 	};
 
