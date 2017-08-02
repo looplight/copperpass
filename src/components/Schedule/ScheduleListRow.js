@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import moment 				 from 'moment';
 import ScheduleListDay 		 from './ScheduleListDay';
+import Button 		 		 from '../Common/Button';
 import ReactDOM 			 from 'react-dom';
 import _ 					 from 'lodash';
 
@@ -189,11 +190,18 @@ class ScheduleListRow extends Component {
   		});
   		// onMouseLeave is bypassed for now
   		return (
-  			<table className="table schedule">
-  				<tbody>
-  					<tr  onMouseLeave={this._handle_mouse_leave}>{days}</tr>
-  				</tbody>
-  			</table>
+  			<div className="row">
+  				<div className="col-sm-11">
+		  			<table className="table schedule">
+		  				<tbody>
+		  					<tr  onMouseLeave={this._handle_mouse_leave}>{days}</tr>
+		  				</tbody>
+		  			</table>
+		  		</div>
+		  		<div className="col-sm-1">
+		  			<Button/>
+		  		</div>
+  			</div>
   	)}
 }
 

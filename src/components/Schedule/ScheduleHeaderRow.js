@@ -16,9 +16,11 @@ const build_header = (today) => {
 
 const ScheduleHeaderRow = ({today}) => {
 	return (
-		<tr>
-			{build_header(today)}
-		</tr>		
+		<table className="table schedule">
+			<tbody>
+				<tr>{build_header(today)}</tr>
+			</tbody>
+		</table>
 	)
 }
 

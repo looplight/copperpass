@@ -3,6 +3,7 @@ import React 				from 'react';
 import ReactDOM 			from 'react-dom';
 import ScheduleListRow 		from './ScheduleListRow';
 import ScheduleListDay		from './ScheduleListDay';
+import Button				from '../Common/Button';
 import ReactTestUtils 		from 'react-addons-test-utils'
 import { shallow, mount } 	from 'enzyme';
 import _ 					from 'lodash';
@@ -288,4 +289,13 @@ describe('<ScheduleListRow/>', () => {
 
 		expect(number_of_weekend_days).toEqual(10);
 	});
+
+	it('renders a button component', () => {
+		const my_date =  moment('2016-01-01');
+		const wrapper = mount(<ScheduleListRow today={my_date}/>);
+
+		expect(wrapper.find(Button).length).toEqual(1);
+
+	});
+
 });

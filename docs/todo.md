@@ -4,9 +4,11 @@
 
 [x] Show hardcoded events
 [x] Deselection
-[ ] Make event days non selectable
+[x] Make event days non selectable
 [x] Date ranges should be inclusive
+[x] Create button component
+[ ] Add button component to each row for saving range
 [ ] Refactor test checking that correct event range is set
 [ ] Print date range for event when clicked
-[ ] Add button component to each row for saving range
+
 [ ] Set event state when clicking "book it!"

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ScheduleList from './ScheduleList';
-import moment from 'moment';
+import ScheduleList         from './ScheduleList';
+import moment               from 'moment';
 
 class Schedule extends Component {
   constructor(props) {
