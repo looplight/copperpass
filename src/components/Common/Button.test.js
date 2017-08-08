@@ -19,7 +19,7 @@ describe('<Button/>', () => {
 
     it('calles the click handler callback when clicked', () => {
         const spy = jest.fn();
-        const wrapper = shallow(<Button handle_click={spy} />)
+        const wrapper = shallow(<Button handle_mouse_down={spy} />)
         
         const found = wrapper.find('button').first();
         found.simulate('click');

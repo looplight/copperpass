@@ -13,14 +13,10 @@ const build_header = (today) => {
 	}
 	return (header_columns)
 };
-
+const style = {border:'1px solid black'};
 const ScheduleHeaderRow = ({today}) => {
 	return (
-		<table className="table schedule">
-			<tbody>
-				<tr>{build_header(today)}</tr>
-			</tbody>
-		</table>
+			<tr>{build_header(today)}</tr>
 	)
 }
 

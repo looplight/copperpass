@@ -3,16 +3,28 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
-
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 .schedule tr {
-	cursor: pointer
+	cursor: pointer;
+}
+.schedule  td.hover:hover { 
+   background-color: #ccc;
 }
 .weekend {
-   background-color: #F0F0F0;
+   background-color: #F5F3EE;
 }
 .selected {
-	background-color: #ff80aa;	
+	background-color: #4A96AD;
+    color: #FFFFFF;
 }
+
 .event {
-    background-color: #d1607a
+    background-color: #7D1935;
+    color: #FFFFFF;
 }

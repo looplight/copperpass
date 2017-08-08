@@ -6,8 +6,8 @@ class Schedule extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        users: [{id:1}, {id:2}],
-        today: moment(),
+        rows: this.props.rows,
+        today: this.props.today,
         events: [
           {user_id:1, range:{from:'2017-01-01',to:'2017-01-07'}}
         ]
@@ -24,8 +24,9 @@ class Schedule extends Component {
     return (
       <div className="container">
         <ScheduleList
-          users={this.state.users}
+          rows={this.state.rows}
           today={this.state.today}
+          on_save={this.props.on_save}
         />
       </div>
     );

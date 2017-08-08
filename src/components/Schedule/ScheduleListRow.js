@@ -12,6 +12,7 @@ class ScheduleListRow extends Component {
 		this._handle_mouse_enter 		 = this._handle_mouse_enter.bind(this)
 		this._handle_mouse_up    		 = this._handle_mouse_up.bind(this);
 		this._handle_mouse_leave		 = this._handle_mouse_leave.bind(this);
+		this._handle_save		 		 = this._handle_save.bind(this);
 
 		//NOTE(daniel): maybe some of these should be received via props?
 		this.state = {
@@ -19,10 +20,7 @@ class ScheduleListRow extends Component {
       		is_starting_on_selected_day: undefined,
       		start_selection: undefined,
       		end_selection: undefined,
-      		events: [
-      			{start:'2017-07-24', end:'2017-07-28'},
-      			{start:'2017-08-07', end:'2017-08-09'}
-      		],
+      		events: props.row.events,
       		days: [],
       		selected_days: []
     	};
@@ -172,6 +170,10 @@ class ScheduleListRow extends Component {
 			}
 		});
 	};
+	
+	_handle_save() {
+		console.log('called');
+	}
 
   	render() {
   		const days = this.state.days.map((day) => {
@@ -189,20 +191,8 @@ class ScheduleListRow extends Component {
   			/>
   		});
   		// onMouseLeave is bypassed for now
-  		return (
-  			<div className="row">
-  				<div className="col-sm-11">
-		  			<table className="table schedule">
-		  				<tbody>
-		  					<tr  onMouseLeave={this._handle_mouse_leave}>{days}</tr>
-		  				</tbody>
-		  			</table>
-		  		</div>
-		  		<div className="col-sm-1">
-		  			<Button/>
-		  		</div>
-  			</div>
-  	)}
+  		return ( <tr  onMouseLeave={this._handle_mouse_leave}>{days}</tr> )
+  	};
 }
 
 export default ScheduleListRow;

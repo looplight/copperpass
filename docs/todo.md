@@ -7,8 +7,15 @@
 [x] Make event days non selectable
 [x] Date ranges should be inclusive
 [x] Create button component
-[ ] Add button component to each row for saving range
-[ ] Refactor test checking that correct event range is set
-[ ] Print date range for event when clicked
+[x] Add button component to each row for saving range
 
-[ ] Set event state when clicking "book it!"
+[x] Start using Schedule component
+[x] Add hover color
+[ ] Write test for hover
+[ ] Event component
+[ ] Month pagination
+[ ] Display week numbers
+[ ] Table header needs to be fixed
+
+
+[ ] Add support for non-full days

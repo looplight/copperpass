@@ -12,12 +12,13 @@ import sinon from 'sinon';
 describe('<ScheduleListRow/>', () => {
 
 	const my_date =  moment('2016-01-01');
+	const row = {id:1, events:[]};
 	it('renders without blowing up',  () => {
-		mount(<ScheduleListRow today={my_date}/>);
+		mount(<ScheduleListRow today={my_date} row={row}/>);
 	});
-	
+
 	it('should start with an empty list of days', () => {
-	   	const wrapper = shallow(<ScheduleListRow/>);
+	   	const wrapper = shallow(<ScheduleListRow row={row}/>);
 	   	expect(wrapper.state('days')).toEqual([]);
 	});	
 
@@ -25,7 +26,7 @@ describe('<ScheduleListRow/>', () => {
 	it('mounts with correct number of days given a month', () => {
 		const my_date =  moment('2016-01-01');
 		const number_of_days = my_date.daysInMonth();
-		const wrapper = mount(<ScheduleListRow today={my_date}/>);
+		const wrapper = mount(<ScheduleListRow today={my_date} row={row}/>);
 		expect(wrapper.state().days.length).toEqual(number_of_days);
 
 	});
@@ -34,7 +35,7 @@ describe('<ScheduleListRow/>', () => {
 		//NOTE(daniel): should we test all months?
 		const my_date =  moment('2016-01-01');
 		const number_of_days = my_date.daysInMonth();
-		const wrapper = mount(<ScheduleListRow today={my_date}/>);
+		const wrapper = mount(<ScheduleListRow today={my_date} row={row}/>);
 
 		const days = wrapper.find(ScheduleListDay);
 
@@ -44,7 +45,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('passes _handle_mouse_down to all ScheduleListDay components', () => {		
 		const my_date =  moment('2016-01-01');
-	    const wrapper = mount(<ScheduleListRow today={my_date}/>);
+	    const wrapper = mount(<ScheduleListRow today={my_date} row={row}/>);
 	    const handler = wrapper.instance()._handle_mouse_down;
 
 	    const days = wrapper.find(ScheduleListDay).forEach((day) => {
@@ -54,7 +55,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('passes is_selected to all ScheduleListDay components', () => {		
 		const my_date =  moment('2016-01-01');
-	    const wrapper = mount(<ScheduleListRow today={my_date}/>);
+	    const wrapper = mount(<ScheduleListRow today={my_date} row={row}/>);
 	    
 
 	    const days = wrapper.find(ScheduleListDay).forEach((day) => {
@@ -64,7 +65,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('handles_mouse_enter sets selected state to true when not already selected', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			is_mouse_down:true,
 			days: [{
@@ -78,7 +79,7 @@ describe('<ScheduleListRow/>', () => {
 	});
 	it('handles_mouse_enter sets selected state to false when already selected (and when starting on a non selected day)', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			is_mouse_down:true,
 			days: [{
@@ -98,7 +99,7 @@ describe('<ScheduleListRow/>', () => {
 	});	
 	it('handles_mouse_enter sets selected state to false when already selected (and when starting on a selected day)', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			is_mouse_down:true,
 			days: [{
@@ -119,7 +120,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('never selects again when mouse enter and starting on selected day', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);		
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);		
 		wrapper.setState({
 			is_mouse_down:true,
 			days: [{
@@ -141,7 +142,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('sets is_starting_on_selected_day correctly when starting on selected day', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			is_starting_on_selected_day: undefined,
 			days: [{
@@ -155,7 +156,7 @@ describe('<ScheduleListRow/>', () => {
 	});
 	it('sets is_starting_on_selected_day correctly when starting on a non selected day', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			is_starting_on_selected_day: undefined,
 			days: [{
@@ -170,7 +171,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('_handle_mouse_down sets selected state to true when not already selected', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		
 		wrapper.setState({
 			days: [{
@@ -186,7 +187,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('_handle_mouse_down sets selected state to false when already selected', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		
 		wrapper.setState({
 			days: [{
@@ -211,7 +212,7 @@ describe('<ScheduleListRow/>', () => {
 	it('marks a day as an event if date is in an event range', () => {
 		//NOTE(daniel): we might want to check that all dates in the range are set
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			events: [
 			{start: '2016-01-15', end: '2016-01-25'}],		
@@ -225,7 +226,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('clicking event days does not set them to is_selected', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			days: [{
 				id:1,
@@ -240,7 +241,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('draging on event days does not set them to is_selected', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
 			days: [{
 				id:1,
@@ -255,7 +256,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('_handle_mouse_down handles day not found', () => {
 		const my_date = moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		var mock_state = {
 			days: [{
 				id:1,
@@ -275,7 +276,7 @@ describe('<ScheduleListRow/>', () => {
 		const spy = ScheduleListRow.prototype._handle_mouse_down = jest.fn(function() {
 			//console.log('Taking over the world!');
 		});
-		const wrapper = mount(<ScheduleListRow today={my_date}/>);
+		const wrapper = mount(<ScheduleListRow today={my_date} row={row}/>);
 
 		wrapper.find(ScheduleListDay).first().simulate('mousedown');
 		expect(spy).toHaveBeenCalled();
@@ -283,19 +284,10 @@ describe('<ScheduleListRow/>', () => {
 
 	it('correctly marks a weekend', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = mount(<ScheduleListRow today={my_date}/>);
+		const wrapper = mount(<ScheduleListRow today={my_date} row={row}/>);
 
 		const number_of_weekend_days = wrapper.find(ScheduleListDay).find('.weekend').length;
 
 		expect(number_of_weekend_days).toEqual(10);
 	});
-
-	it('renders a button component', () => {
-		const my_date =  moment('2016-01-01');
-		const wrapper = mount(<ScheduleListRow today={my_date}/>);
-
-		expect(wrapper.find(Button).length).toEqual(1);
-
-	});
-
 });
