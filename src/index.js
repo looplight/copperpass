@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Schedule from './components/Schedule/Schedule';
 import ScheduleListRow from './components/Schedule/ScheduleListRow';
 import ScheduleHeaderRow    from './components/Schedule/ScheduleHeaderRow';
+import App from './App';
 import moment 	from 'moment';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -14,15 +15,16 @@ const rows = [{id:1, title:'Daniel', subtitle:'code monkii 1', events: [
                 {start:'2017-08-07', end:'2017-08-11'}]},
                 ];
 
-const handle_save = (selected_ranges) => {
+const handle_update = (data) => {
+
 
 }
 
 const on_event_click = (event) => {
-    
+
 }
 
 ReactDOM.render(
-    <Schedule rows={rows} today={moment() } />,
+    <App  />,
     document.getElementById('root')
 );

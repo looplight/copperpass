@@ -12,8 +12,9 @@
 [x] Start using Schedule component
 [x] Add hover color
 
-[ ] Handle remove event from Schedule component
-[ ] Write test for hover
+[ ] When calling function with selected range, also send the row id
+
+
 [ ] Month pagination
 [ ] Display week numbers
 [ ] Table header needs to be fixed
@@ -27,3 +28,4 @@
     [ ] Selectable weekdays true/false
 [ ] Schedule should accept a prop that defines starting day, instead of sending a moment object
 [ ] error handle event ranges in inverse order
+

@@ -2,7 +2,12 @@ import React 		     from 'react';
 import ScheduleListRow   from './ScheduleListRow';
 import ScheduleHeaderRow from './ScheduleHeaderRow';
 
-const ScheduleList = ({rows, today}) => {
+const ScheduleList = ({rows, today, update}) => {
+	console.log('NUMBER OF ROWS', rows);
+	const handle_update = (data) => {
+		console.log('selected range', data.ranges);
+		update(data);
+	}
 	return (
 		<table className="table schedule unselectable">
 			<thead className="thead-inverse">
@@ -13,7 +18,9 @@ const ScheduleList = ({rows, today}) => {
 					return <ScheduleListRow
 						key={row.id}
 						row={row}
+						update={handle_update}	
 						today={today}/>
+
 				})}
 			</tbody>
 		</table>

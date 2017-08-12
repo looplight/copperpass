@@ -27,9 +27,6 @@ const is_in_range = (date, range) => {
 	return !!found_in_range;
 }
 
-const create_event = range => {
-
-} 
 class ScheduleListRow extends Component {
 	constructor(props) {
 		super(props);
@@ -45,23 +42,27 @@ class ScheduleListRow extends Component {
       		is_starting_on_selected_day: undefined,
       		start_selection: undefined,
       		end_selection: undefined,
-      		events: props.row.events,
       		days: [],
-      		selected_days: []
     	};
 	}
 
 	componentDidMount() {
 		document.addEventListener('mouseup', this.handle_click_outside.bind(this), true);	
 		this.setState({
-			days: this._build_columns(this.props.today)
+			days: this._build_columns(this.props.today, this.props.row.events)
 		});
 	}
 
 	componentWillUnmount() {
 	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);		
 	}
-
+	componentWillReceiveProps() {
+		console.log('componentWillReceiveProps')
+		this.setState({
+			//events: this.props.row.events,
+			days: this._build_columns(this.props.today, this.props.row.events)
+		});		
+	}
 	handle_click_outside(event) {
 		const domNode = ReactDOM.findDOMNode(this);
 	    if ((!domNode || !domNode.contains(event.target))) {
@@ -73,15 +74,15 @@ class ScheduleListRow extends Component {
 			});	    	
 	    }		
 	}
-	_build_columns(today) {
+	_build_columns(today, events) {
 		const is_weekend = date => {
 			return date.day() % 6 === 0;
 		}
 
 		const is_event = date => {
-			if(!this.state.events || !this.state.events.length) return false;
+			if(!events || !events.length) return false;
 			//check state.events for a range containing 'date'
-			const found_in_event = _.find(this.state.events, event => moment(date.format('YYYY-MM-DD')).isBetween(moment(event.start), moment(event.end), null, '[]'));
+			const found_in_event = _.find(events, event => moment(date.format('YYYY-MM-DD')).isBetween(moment(event.start), moment(event.end), null, '[]'));
 			return !!found_in_event;
 		}
 		// id day is in an event range, mark it as an event with correct class and event id (?)
@@ -124,6 +125,31 @@ class ScheduleListRow extends Component {
 			}
 		}
 		return days;		
+	}
+	
+	_get_selected_ranges() {
+		const all_selected_days = _.filter(this.state.days, day => day.is_selected);
+			
+		let is_start = true;
+		let start;
+		let end;
+		const ranges = [];
+		for(let i = 0; i < all_selected_days.length; i++) {
+			if(is_start) start = all_selected_days[i].date;
+			is_start = false;
+			if( i !== all_selected_days.length - 1 && Math.abs(parseInt(all_selected_days[i+1].display_text) - parseInt(all_selected_days[i].display_text)) > 1 && parseInt(all_selected_days[i+1].display_text) !== 1) {
+				end = all_selected_days[i].date;
+				is_start = true;
+				ranges.push({start, end})
+			}
+
+			if(i === all_selected_days.length - 1) {
+				end = all_selected_days[i].date
+				is_start = true;
+				ranges.push({start, end})				
+			} 
+		}
+		return {ranges: ranges, id: this.props.row.id};
 	}
 
 	_handle_mouse_down(display_text, date, event) {
@@ -197,19 +223,20 @@ class ScheduleListRow extends Component {
 	}
 
 	_handle_mouse_up(day) {
+		this.props.update(this._get_selected_ranges());
 		this.setState( (prev_state, props) => {
 			return {
 				is_mouse_down:false,
-				is_open:true
 			}
 		});
 	};
 	
 	_handle_save() {
-		console.log('called');
+		console.log('called _handle_save');
 	}
 
   	render() {
+  		console.log()
   		const days = this.state.days.map((day) => {
   			return <ScheduleListDay 
 	  			key={day.id}

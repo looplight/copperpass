@@ -19,7 +19,7 @@ class Schedule extends Component {
         <ScheduleList
           rows={this.props.rows} // contains the events
           today={this.props.today}
-          on_save={this.props.on_save}
+          update={this.props.update}
           on_event_click={this.props.on_event_click}
         />
       </div>
