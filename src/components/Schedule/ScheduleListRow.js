@@ -5,6 +5,31 @@ import Button 		 		 from '../Common/Button';
 import ReactDOM 			 from 'react-dom';
 import _ 					 from 'lodash';
 
+const is_event = (date, state) => {
+	if(!state.events || !state.events.length) return false;	
+
+	//check state.events for a range containing 'date'
+	const found_in_event = _.find(state.events, event => moment(date).isBetween(moment(event.start), moment(event.end), null, '[]'));
+	return !!found_in_event;
+}
+
+const find_range = (date, state) => {
+	if(!state.events || !state.events.length) return false;	
+
+	//check state.events for a range containing 'date'
+	const found_in_event = _.find(state.events, event => moment(date).isBetween(moment(event.start), moment(event.end), null, '[]'));
+	return found_in_event;
+}
+
+const is_in_range = (date, range) => {
+	console.log('checking',date);
+	const found_in_range = moment(date.date).isBetween(moment(range.start), moment(range.end), null, '[]');
+	return !!found_in_range;
+}
+
+const create_event = range => {
+
+} 
 class ScheduleListRow extends Component {
 	constructor(props) {
 		super(props);
@@ -39,10 +64,7 @@ class ScheduleListRow extends Component {
 
 	handle_click_outside(event) {
 		const domNode = ReactDOM.findDOMNode(this);
-		console.log('domNode',domNode);
-		console.log('event.target',event.target);
 	    if ((!domNode || !domNode.contains(event.target))) {
-	    	console.log('Around the outside!')
 	    	
 			this.setState( (prev_state, props) => {
 				return {
@@ -51,13 +73,13 @@ class ScheduleListRow extends Component {
 			});	    	
 	    }		
 	}
-
 	_build_columns(today) {
 		const is_weekend = date => {
 			return date.day() % 6 === 0;
 		}
 
 		const is_event = date => {
+			if(!this.state.events || !this.state.events.length) return false;
 			//check state.events for a range containing 'date'
 			const found_in_event = _.find(this.state.events, event => moment(date.format('YYYY-MM-DD')).isBetween(moment(event.start), moment(event.end), null, '[]'));
 			return !!found_in_event;
@@ -111,9 +133,23 @@ class ScheduleListRow extends Component {
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
-			if(!found || found.is_event) return prev_state;
+			if(found.is_event) {
+				console.log('we have an event!');
+				found.is_selected = !found.is_selected;
+				const found_range = find_range(found.date, this.state);
+				console.log('found_range',found_range);
+				found.is_selected = false;
+				return {
+					// 1. remove correct range
+					// 2. filter out days in this range and set them ti is_event = false
+				days: _.map(days_copy, day => {
+					if(is_in_range(day, found_range)) day.is_event = false;
+					return day;
+				})
+			};	
+			} 
+			if(!found) return prev_state;
 			found.is_selected = !found.is_selected;
-			
 			return {
 				days: days_copy,
 				is_mouse_down:true,
@@ -162,8 +198,6 @@ class ScheduleListRow extends Component {
 
 	_handle_mouse_up(day) {
 		this.setState( (prev_state, props) => {
-			// open awesome popup
-			// create new event if we have a selected range
 			return {
 				is_mouse_down:false,
 				is_open:true

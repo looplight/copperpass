@@ -1,4 +1,4 @@
-import React 			from 'react';
+import React from 'react';
 
 const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event, handle_mouse_down, handle_mouse_enter, handle_mouse_up}) => {
 	const _handle_mouse_down = (event) => {

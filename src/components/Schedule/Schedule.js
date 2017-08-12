@@ -5,13 +5,6 @@ import moment               from 'moment';
 class Schedule extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-        rows: this.props.rows,
-        today: this.props.today,
-        events: [
-          {user_id:1, range:{from:'2017-01-01',to:'2017-01-07'}}
-        ]
-    };
   }
   
   componentWillMount() {
@@ -24,9 +17,10 @@ class Schedule extends Component {
     return (
       <div className="container">
         <ScheduleList
-          rows={this.state.rows}
-          today={this.state.today}
+          rows={this.props.rows} // contains the events
+          today={this.props.today}
           on_save={this.props.on_save}
+          on_event_click={this.props.on_event_click}
         />
       </div>
     );

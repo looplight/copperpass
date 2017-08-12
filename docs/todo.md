@@ -11,11 +11,19 @@
 
 [x] Start using Schedule component
 [x] Add hover color
+
+[ ] Handle remove event from Schedule component
 [ ] Write test for hover
-[ ] Event component
 [ ] Month pagination
 [ ] Display week numbers
 [ ] Table header needs to be fixed
-
+[ ] Theme/style as props to Schedule
+[ ] Gravatar component
 
 [ ] Add support for non-full days
+[ ] Pivot selection/de-selection around day that was clicked
+[ ] Redactor so that Schedule takes on_event_click as a prop
+[ ] Props
+    [ ] Selectable weekdays true/false
+[ ] Schedule should accept a prop that defines starting day, instead of sending a moment object
+[ ] error handle event ranges in inverse order
