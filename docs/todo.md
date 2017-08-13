@@ -13,14 +13,17 @@
 [x] Add hover color
 
 [x] When calling function with selected range, also send the row id
-[ ] Use state for selected ranges
-[ ] Change how we handle 
+[x] Use state for selected ranges
+[ ] Connect events to a backend (Firebase?)
+[ ] Connect notes to an event
+[ ] Pending/aproved(true/false) events (event status)
 
 [ ] Month pagination
 [ ] Display week numbers
 [ ] Table header needs to be fixed
 [ ] Theme/style as props to Schedule
 [ ] Gravatar component
+[ ] Live update of days left when selecting days
 
 [ ] Add support for non-full days
 [ ] Pivot selection/de-selection around day that was clicked

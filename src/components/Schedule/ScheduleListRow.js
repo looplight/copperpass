@@ -46,7 +46,7 @@ class ScheduleListRow extends Component {
 	componentDidMount() {
 		document.addEventListener('mouseup', this.handle_click_outside.bind(this), true);	
 		this.setState({
-			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
+			days: this._build_columns(this.props.today, this.props.row.events)
 		});
 	}
 
@@ -57,7 +57,7 @@ class ScheduleListRow extends Component {
 		console.log('componentWillReceiveProps')
 		this.setState({
 			//events: this.props.row.events,
-			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
+			days: this._build_columns(this.props.today, this.props.row.events)
 		});		
 	}
 
@@ -72,7 +72,8 @@ class ScheduleListRow extends Component {
 			});	    	
 	    }		
 	}
-	_build_columns(today, events, selected_ranges) {
+	_build_columns(today, events) {
+		const dem_ranges = this._get_selected_ranges();
 		const is_weekend = date => {
 			return date.day() % 6 === 0;
 		}
@@ -84,12 +85,13 @@ class ScheduleListRow extends Component {
 			return !!found_in_event;
 		}
 		const is_selected = date => {
-			if(!selected_ranges || !selected_ranges.length) return false;	
-			//check state.selected_ranges for a range containing 'date'
-
-			const found_in_range = _.find(selected_ranges, range => moment(date.format('YYYY-MM-DD')).isBetween(moment(range.start), moment(range.end), null, '[]'));
+			//if(!selected_ranges || !selected_ranges.length) return false;	
 			
-			return !!found_in_range;
+			// find date in _get_selected_ranges
+			const test = _.find(dem_ranges.ranges, range => moment(date.format('YYYY-MM-DD')).isBetween(moment(range.start), moment(range.end), null, '[]'));
+			//const found_in_range = _.find(selected_ranges, range => moment(date.format('YYYY-MM-DD')).isBetween(moment(range.start), moment(range.end), null, '[]'));
+			
+			return !!test;
 		}		
 		// id day is in an event range, mark it as an event with correct class and event id (?)
 		const days_in_month = today.daysInMonth();
@@ -106,7 +108,7 @@ class ScheduleListRow extends Component {
 					is_weekend:true,
 					display_text:day_text,
 					date: day.format('YYYY-MM-DD'),
-					is_selected:is_selected(day),
+					is_selected:is_selected(day) && !is_event(day),
 					is_event: is_event(day),
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
@@ -120,7 +122,7 @@ class ScheduleListRow extends Component {
 					is_weekend:false,
 					display_text:day_text,
 					date: day.format('YYYY-MM-DD'),
-					is_selected:is_selected(day),
+					is_selected:is_selected(day) && !is_event(day),
 					is_event: is_event(day),
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
@@ -180,6 +182,9 @@ class ScheduleListRow extends Component {
 				const found_range = find_range(found.date, this.props);
 				found.is_selected = false;
 				this.props.event_click({range:found_range, id: this.props.row.id});
+				return {
+					is_mouse_down:true,
+				}				
 			} 
 			if(!found) return prev_state;
 			found.is_selected = !found.is_selected;
@@ -234,10 +239,8 @@ class ScheduleListRow extends Component {
 			return day.display_text === display_text;
 		});
 		
-
-		// we want to send all ranges
-		console.log('hmmmmmmmmmm',this._get_selected_ranges())
 		if(!found.is_event) this.props.update(this._get_selected_ranges());
+
 		this.setState( (prev_state, props) => {
 			return {
 				is_mouse_down:false,
@@ -266,7 +269,7 @@ class ScheduleListRow extends Component {
   			/>
   		});
   		// onMouseLeave is bypassed for now
-  		return ( <tr  onMouseLeave={this._handle_mouse_leave}>{days}</tr> )
+  		return ( <tr onMouseLeave={this._handle_mouse_leave}>{days}</tr> )
   	};
 }
 

@@ -5,7 +5,7 @@ import _                     from 'lodash';
 
 const Button = ({handle_mouse_down}) => {
     return (<button 
-        className='btn btn-default'
+        className='btn btn-success'
         onClick={handle_mouse_down}>Book it!</button>)
 }
 

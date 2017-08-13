@@ -15,7 +15,7 @@ class Schedule extends Component {
   }
   render() {
     return (
-      <div className="container">
+      <div>
         <ScheduleList
           rows={this.props.rows}
           today={this.props.today}
