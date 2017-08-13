@@ -14,38 +14,56 @@ class App extends Component {
             selected_ranges:undefined,
             rows:[{id:1, title:'Daniel', subtitle:'code monkii 1', events: [
                 {start:'2017-08-21', end:'2017-08-25'},
-                {start:'2017-08-14', end:'2017-08-18'}]},
+                {start:'2017-08-14', end:'2017-08-18'}], selected_ranges:[{start:'2017-09-04', end:'2017-09-07'}]},
             {id:2, title:'Peter', subtitle:'code monkii 2', events: [
-                {start:'2017-08-07', end:'2017-08-11'}]},
+                {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[]},
                 ]
         };
     }
     // when button is clicked
     _create_events(w) {
+        // create events from selected_ranges on row, reset selected_ranges
+       console.log('this.state', this.state)
+       let rows_copy = this.state.rows.slice();
+       rows_copy = rows_copy.map(row => {
+        row.events = [...row.events, ...row.selected_ranges];
+        row.selected_ranges = [];
+       });
+       this.setState((prev_state, props) => {
+        rows:rows_copy
+       }); 
+    }
+    _handle_ranges(data) {
+
+        // update selected_ranges on row
+
+        console.log('data in App', data);
+        // set correct state here
+        
         this.setState((prev_state,props) => {
             let rows_copy = prev_state.rows.slice();
-            let found = _.find(rows_copy, row => row.id === this.d.id);
-            found.events = [...found.events, ...this.d.ranges];
+            let found = _.find(rows_copy, row => row.id === data.id);
+            found.selected_ranges = [...found.selected_ranges, ...data.ranges];
 
             return {
                 rows: rows_copy
             }
-        })        
+        });
     }
-    _handle_ranges(data) {
-        console.log('data in App', data);
-        this.d = data;
-
-    }
-    _event_click(event_range) {
-        
+    _event_click(data) {
         this.setState((prev_state, props) => {
-            console.log('got clicked!',event_range, prev_state.rows);
-            let rows_copy = prev_state.rows.slice();
+            console.log('got clicked!');
+            let event_range = data.range;
+            let rows_copy = this.state.rows.slice();
             const new_rows = rows_copy.map(row => {
                 row.events = _.filter(row.events, event => {
                     console.log('what is it',event_range.start === event.start && event_range.end === event.end);
-                    return !(event_range.start === event.start && event_range.end === event.end);
+                    if(row.id === data.id) {
+                        return !(event_range.start === event.start && event_range.end === event.end);    
+                    } else {
+                        return event;
+                    }
+                    
                 })
                 return row;
             });

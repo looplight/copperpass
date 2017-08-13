@@ -12,8 +12,9 @@
 [x] Start using Schedule component
 [x] Add hover color
 
-[ ] When calling function with selected range, also send the row id
-
+[x] When calling function with selected range, also send the row id
+[ ] Use state for selected ranges
+[ ] Change how we handle 
 
 [ ] Month pagination
 [ ] Display week numbers
