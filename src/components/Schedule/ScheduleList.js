@@ -2,7 +2,7 @@ import React 		     from 'react';
 import ScheduleListRow   from './ScheduleListRow';
 import ScheduleHeaderRow from './ScheduleHeaderRow';
 
-const ScheduleList = ({rows, today, update}) => {
+const ScheduleList = ({rows, today, update, event_click}) => {
 	console.log('NUMBER OF ROWS', rows);
 	const handle_update = (data) => {
 		console.log('selected range', data.ranges);
@@ -19,7 +19,9 @@ const ScheduleList = ({rows, today, update}) => {
 						key={row.id}
 						row={row}
 						update={handle_update}	
+						event_click={event_click}
 						today={today}/>
+
 
 				})}
 			</tbody>

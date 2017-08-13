@@ -20,6 +20,7 @@ class App extends Component {
                 ]
         };
     }
+    // when button is clicked
     _create_events(w) {
         this.setState((prev_state,props) => {
             let rows_copy = prev_state.rows.slice();
@@ -36,6 +37,24 @@ class App extends Component {
         this.d = data;
 
     }
+    _event_click(event_range) {
+        
+        this.setState((prev_state, props) => {
+            console.log('got clicked!',event_range, prev_state.rows);
+            let rows_copy = prev_state.rows.slice();
+            const new_rows = rows_copy.map(row => {
+                row.events = _.filter(row.events, event => {
+                    console.log('what is it',event_range.start === event.start && event_range.end === event.end);
+                    return !(event_range.start === event.start && event_range.end === event.end);
+                })
+                return row;
+            });
+
+            return {
+                rows: new_rows
+            }
+        });
+    }
     componentDidMount() {
     }
 
@@ -46,7 +65,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <Schedule rows={this.state.rows} today={moment()} update={this._handle_ranges}/>
+                <Schedule rows={this.state.rows} today={moment()} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
                 <Button handle_mouse_down={this._create_events.bind(this)}/>
             </div>)
     };

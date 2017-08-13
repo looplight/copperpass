@@ -17,10 +17,10 @@ class Schedule extends Component {
     return (
       <div className="container">
         <ScheduleList
-          rows={this.props.rows} // contains the events
+          rows={this.props.rows}
           today={this.props.today}
           update={this.props.update}
-          on_event_click={this.props.on_event_click}
+          event_click={this.props.event_click}
         />
       </div>
     );

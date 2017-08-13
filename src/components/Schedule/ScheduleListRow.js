@@ -13,16 +13,15 @@ const is_event = (date, state) => {
 	return !!found_in_event;
 }
 
-const find_range = (date, state) => {
-	if(!state.events || !state.events.length) return false;	
+const find_range = (date, props) => {
+	if(!props.row.events || !props.row.events.length) return false;	
 
 	//check state.events for a range containing 'date'
-	const found_in_event = _.find(state.events, event => moment(date).isBetween(moment(event.start), moment(event.end), null, '[]'));
+	const found_in_event = _.find(props.row.events, event => moment(date).isBetween(moment(event.start), moment(event.end), null, '[]'));
 	return found_in_event;
 }
 
 const is_in_range = (date, range) => {
-	console.log('checking',date);
 	const found_in_range = moment(date.date).isBetween(moment(range.start), moment(range.end), null, '[]');
 	return !!found_in_range;
 }
@@ -162,9 +161,11 @@ class ScheduleListRow extends Component {
 			if(found.is_event) {
 				console.log('we have an event!');
 				found.is_selected = !found.is_selected;
-				const found_range = find_range(found.date, this.state);
+				const found_range = find_range(found.date, this.props);
 				console.log('found_range',found_range);
 				found.is_selected = false;
+				this.props.event_click(found_range);
+				/*
 				return {
 					// 1. remove correct range
 					// 2. filter out days in this range and set them ti is_event = false
@@ -172,7 +173,7 @@ class ScheduleListRow extends Component {
 					if(is_in_range(day, found_range)) day.is_event = false;
 					return day;
 				})
-			};	
+			};	*/
 			} 
 			if(!found) return prev_state;
 			found.is_selected = !found.is_selected;
@@ -222,8 +223,12 @@ class ScheduleListRow extends Component {
 		});		
 	}
 
-	_handle_mouse_up(day) {
-		this.props.update(this._get_selected_ranges());
+	_handle_mouse_up(display_text) {
+		const found = this.state.days.find((day) => {
+			return day.display_text === display_text;
+		});
+		console.log('found', found);
+		if(!found.is_event) this.props.update(this._get_selected_ranges());
 		this.setState( (prev_state, props) => {
 			return {
 				is_mouse_down:false,
