@@ -3,7 +3,6 @@ import ScheduleListRow   from './ScheduleListRow';
 import ScheduleHeaderRow from './ScheduleHeaderRow';
 
 const ScheduleList = ({rows, today, update, event_click}) => {
-	console.log('NUMBER OF ROWS', rows);
 	const handle_update = (data) => {
 		console.log('selected range', data.ranges);
 		update(data);

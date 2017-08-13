@@ -43,7 +43,7 @@ class App extends Component {
         this.setState((prev_state,props) => {
             let rows_copy = prev_state.rows.slice();
             let found = _.find(rows_copy, row => row.id === data.id);
-            found.selected_ranges = [...found.selected_ranges, ...data.ranges];
+            found.selected_ranges = data.ranges;
 
             return {
                 rows: rows_copy
@@ -52,7 +52,6 @@ class App extends Component {
     }
     _event_click(data) {
         this.setState((prev_state, props) => {
-            console.log('got clicked!');
             let event_range = data.range;
             let rows_copy = this.state.rows.slice();
             const new_rows = rows_copy.map(row => {

@@ -143,7 +143,13 @@ class ScheduleListRow extends Component {
 		for(let i = 0; i < all_selected_days.length; i++) {
 			if(is_start) start = all_selected_days[i].date;
 			is_start = false;
-			if( i !== all_selected_days.length - 1 && Math.abs(parseInt(all_selected_days[i+1].display_text) - parseInt(all_selected_days[i].display_text)) > 1) {
+
+			console.log('all_selected_days[i]',all_selected_days[i]);
+			console.log('diff days',Math.abs(moment(all_selected_days[i].date).diff(moment(all_selected_days[i+1]), 'days')));
+
+
+
+			if( i !== all_selected_days.length - 1 && Math.abs(moment(all_selected_days[i].date).diff(moment(all_selected_days[i+1].date), 'days')) > 1) {
 				console.log('1111')
 				end = all_selected_days[i].date;
 				is_start = true;
@@ -155,7 +161,8 @@ class ScheduleListRow extends Component {
 				end = all_selected_days[i].date
 				is_start = true;
 				ranges.push({start, end})				
-			} 
+			}
+
 		}
 		return {ranges: ranges, id: this.props.row.id};
 	}
