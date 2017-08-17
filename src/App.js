@@ -12,29 +12,36 @@ class App extends Component {
         //NOTE(daniel): maybe some of these should be received via props?
         this.state = {
             selected_ranges:undefined,
-            rows:[{id:1, title:'Daniel', subtitle:'code monkii 1', events: [
-                {start:'2017-08-21', end:'2017-08-25'},
-                {start:'2017-08-14', end:'2017-08-18'}], selected_ranges:[]},
-            {id:2, title:'Peter', subtitle:'code monkii 2', events: [
-                {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[]},
-                ]
+            rows:[
+            {id:1, title:'Daniel', subtitle:'code monkii 1',
+                events: [
+                    {start:'2017-08-21', end:'2017-08-25'},
+                    {start:'2017-08-28', end:'2017-09-01'}],
+                    selected_ranges:[]
+            },
+            {id:2, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[]
+            },                                               
+        ]
         };
     }
     // when button is clicked
     _create_events(w) {
-        // create events from selected_ranges on row, reset selected_ranges
        let rows_copy = this.state.rows.slice();
        
        rows_copy = rows_copy.map(row => {
             row.events = [...row.events, ...row.selected_ranges];
-            row.selected_ranges = [];
+            ///row.selected_ranges = [];
        });
 
        this.setState((prev_state, props) => {
         rows:rows_copy
        }); 
     }
-    _handle_ranges(data) {        
+    _handle_ranges(data) {
+
+        //add to new selected_ranges state array, make sure we tag it with the row id
         this.setState((prev_state,props) => {
             let rows_copy = prev_state.rows.slice();
             let found = _.find(rows_copy, row => row.id === data.id);
@@ -46,6 +53,7 @@ class App extends Component {
         });
     }
     _event_click(data) {
+        console.log('data',data);
         this.setState((prev_state, props) => {
             let event_range = data.range;
             let rows_copy = this.state.rows.slice();
@@ -70,7 +78,7 @@ class App extends Component {
     }
 
     componentWillUnmount() {
-   
+
     }
 
     render() {

@@ -20,8 +20,6 @@ const ScheduleList = ({rows, today, update, event_click}) => {
 						update={handle_update}	
 						event_click={event_click}
 						today={today}/>
-
-
 				})}
 			</tbody>
 		</table>

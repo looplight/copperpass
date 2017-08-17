@@ -146,20 +146,13 @@ class ScheduleListRow extends Component {
 			if(is_start) start = all_selected_days[i].date;
 			is_start = false;
 
-			console.log('all_selected_days[i]',all_selected_days[i]);
-			console.log('diff days',Math.abs(moment(all_selected_days[i].date).diff(moment(all_selected_days[i+1]), 'days')));
-
-
-
 			if( i !== all_selected_days.length - 1 && Math.abs(moment(all_selected_days[i].date).diff(moment(all_selected_days[i+1].date), 'days')) > 1) {
-				console.log('1111')
 				end = all_selected_days[i].date;
 				is_start = true;
 				ranges.push({start, end})
 			}
 
 			if(i === all_selected_days.length - 1) {
-				console.log('2222')
 				end = all_selected_days[i].date
 				is_start = true;
 				ranges.push({start, end})				

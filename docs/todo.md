@@ -14,6 +14,7 @@
 
 [x] When calling function with selected range, also send the row id
 [x] Use state for selected ranges
+[ ] Clear ranges button (for learning purposes)
 [ ] Connect events to a backend (Firebase?)
 [ ] Connect notes to an event
 [ ] Pending/aproved(true/false) events (event status)
@@ -33,3 +34,6 @@
 [ ] Schedule should accept a prop that defines starting day, instead of sending a moment object
 [ ] error handle event ranges in inverse order
 
+[ ] Make hover fade in, try different colors
+[ ] Create responsive layouts
+[ ] Write "Advance" function that advances between events
