@@ -40,7 +40,6 @@ class App extends Component {
        }); 
     }
     _handle_ranges(data) {
-
         //add to new selected_ranges state array, make sure we tag it with the row id
         this.setState((prev_state,props) => {
             let rows_copy = prev_state.rows.slice();
@@ -53,7 +52,6 @@ class App extends Component {
         });
     }
     _event_click(data) {
-        console.log('data',data);
         this.setState((prev_state, props) => {
             let event_range = data.range;
             let rows_copy = this.state.rows.slice();

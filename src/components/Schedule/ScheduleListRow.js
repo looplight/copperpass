@@ -54,7 +54,6 @@ class ScheduleListRow extends Component {
 	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);		
 	}
 	componentWillReceiveProps() {
-		console.log('componentWillReceiveProps')
 		this.setState({
 			//events: this.props.row.events,
 			days: this._build_columns(this.props.today, this.props.row.events)
@@ -137,7 +136,6 @@ class ScheduleListRow extends Component {
 	
 	_get_selected_ranges() {
 		const all_selected_days = _.filter(this.state.days, day => day.is_selected);
-		console.log('all_selected_days',all_selected_days)
 		let is_start = true;
 		let start;
 		let end;
@@ -169,8 +167,8 @@ class ScheduleListRow extends Component {
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
+			if(!found) return prev_state;			
 			if(found.is_event) {
-				console.log('we have an event!');
 				found.is_selected = !found.is_selected;
 				const found_range = find_range(found.date, this.props);
 				found.is_selected = false;
@@ -179,7 +177,6 @@ class ScheduleListRow extends Component {
 					is_mouse_down:true,
 				}				
 			} 
-			if(!found) return prev_state;
 			found.is_selected = !found.is_selected;
 			return {
 				days: days_copy,
@@ -232,7 +229,7 @@ class ScheduleListRow extends Component {
 			return day.display_text === display_text;
 		});
 		
-		if(!found.is_event) this.props.update(this._get_selected_ranges());
+		if(true) this.props.update(this._get_selected_ranges());
 
 		this.setState( (prev_state, props) => {
 			return {
@@ -246,7 +243,6 @@ class ScheduleListRow extends Component {
 	}
 
   	render() {
-  		console.log()
   		const days = this.state.days.map((day) => {
   			return <ScheduleListDay 
 	  			key={day.id}

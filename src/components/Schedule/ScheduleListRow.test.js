@@ -212,21 +212,15 @@ describe('<ScheduleListRow/>', () => {
 	it('marks a day as an event if date is in an event range', () => {
 		//NOTE(daniel): we might want to check that all dates in the range are set
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
-		wrapper.setState({
-			events: [
-			{start: '2016-01-15', end: '2016-01-25'}],		
-		});
-		wrapper.setState({
-			days: wrapper.instance()._build_columns(my_date)
-		});
-		const event_date = _.find(wrapper.state().days, day => day.date === '2016-01-20');
+		let row1 = {id:1, events:[{start:'2016-01-01', end:'2016-01-03'}]}
+		const wrapper = mount(<ScheduleListRow today={my_date} row={row1} />);
+		const event_date = _.find(wrapper.state().days, day => day.date === '2016-01-02');
 		expect(event_date.is_event).toEqual(true)
 	});
 
 	it('clicking event days does not set them to is_selected', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row} event_click={() => {}}/>);
 		wrapper.setState({
 			days: [{
 				id:1,
@@ -241,7 +235,7 @@ describe('<ScheduleListRow/>', () => {
 
 	it('draging on event days does not set them to is_selected', () => {
 		const my_date =  moment('2016-01-01');
-		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
+		const wrapper = shallow(<ScheduleListRow today={my_date} row={row} event_click={() => {}}/>);
 		wrapper.setState({
 			days: [{
 				id:1,

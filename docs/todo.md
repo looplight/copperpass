@@ -14,6 +14,8 @@
 
 [x] When calling function with selected range, also send the row id
 [x] Use state for selected ranges
+[ ] Styles for range start/end date
+[ ] Rename prop.row to something else (prop.data?)
 [ ] Clear ranges button (for learning purposes)
 [ ] Connect events to a backend (Firebase?)
 [ ] Connect notes to an event
