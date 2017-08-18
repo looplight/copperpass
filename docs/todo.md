@@ -14,12 +14,15 @@
 
 [x] When calling function with selected range, also send the row id
 [x] Use state for selected ranges
+[ ] Make sure we do checks agains date strings/dates and not display_text
 [ ] Styles for range start/end date
 [ ] Rename prop.row to something else (prop.data?)
 [ ] Clear ranges button (for learning purposes)
 [ ] Connect events to a backend (Firebase?)
 [ ] Connect notes to an event
 [ ] Pending/aproved(true/false) events (event status)
+
+[ ] Create documentation around component (as seen in the Pluralsight course "Creating reusable components")  
 
 [ ] Month pagination
 [ ] Display week numbers
