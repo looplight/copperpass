@@ -72,12 +72,6 @@ class App extends Component {
             }
         });
     }
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-
-    }
 
     render() {
         return (
