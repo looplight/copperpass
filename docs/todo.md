@@ -14,6 +14,8 @@
 
 [x] When calling function with selected range, also send the row id
 [x] Use state for selected ranges
+[ ] in tests, send the date on day state instead of passing it into the event handler funcstions as a separate paramater
+[ ] Check that all days are selected after drag selecting betweend date_1 and date_2
 [ ] Make sure we do checks agains date strings/dates and not display_text
 [ ] Styles for range start/end date
 [ ] Rename prop.row to something else (prop.data?)
@@ -21,6 +23,7 @@
 [ ] Connect events to a backend (Firebase?)
 [ ] Connect notes to an event
 [ ] Pending/aproved(true/false) events (event status)
+
 
 [ ] Create documentation around component (as seen in the Pluralsight course "Creating reusable components")  
 

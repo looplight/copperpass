@@ -5,6 +5,8 @@ import Button 		 		 from '../Common/Button';
 import ReactDOM 			 from 'react-dom';
 import _ 					 from 'lodash';
 
+
+// @Refactor - steamline these functions
 const is_event = (date, state) => {
 	if(!state.events || !state.events.length) return false;	
 
@@ -26,6 +28,11 @@ const is_in_range = (date, range) => {
 	return !!found_in_range;
 }
 
+
+const select_range = (range, state) => {
+
+}
+
 class ScheduleListRow extends Component {
 	constructor(props) {
 		super(props);
@@ -40,6 +47,8 @@ class ScheduleListRow extends Component {
       		is_mouse_down: false, // is selecting
       		is_starting_on_selected_day: undefined,
       		days: [],
+      		start_select_date:undefined,
+      		highest_selected_day:undefined
     	};
 	}
 
@@ -125,6 +134,7 @@ class ScheduleListRow extends Component {
 					is_event: is_event(day),
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
+					handle_mouse_leave:this._handle_mouse_leave,
 					handle_mouse_down: this._handle_mouse_down,
 					handle_mouse_up: this._handle_mouse_up,
 					
@@ -167,7 +177,7 @@ class ScheduleListRow extends Component {
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
-			if(!found) return prev_state;			
+			if(!found) return prev_state;
 			if(found.is_event) {
 				found.is_selected = !found.is_selected;
 				const found_range = find_range(found.date, this.props);
@@ -181,18 +191,46 @@ class ScheduleListRow extends Component {
 			return {
 				days: days_copy,
 				is_mouse_down:true,
-				is_starting_on_selected_day: !found.is_selected // invert it again so that we get the orignal state of the selection
+				is_starting_on_selected_day: !found.is_selected, // invert it again so that we get the orignal state of the selection
+				start_select_date:date
 			}
 		});		
 	};
 
-	_handle_mouse_enter(display_text) {
+	_handle_mouse_enter(display_text, date, event) {
 		if(!this.state.is_mouse_down) return;
 		this.setState((prev_state, props) => {
 			const days_copy = prev_state.days.slice();
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
+
+			// select in the 'right' direction
+			const highest_date = moment(found.date).isAfter(moment(this.state.highest_selected_day)) ? found.date : (this.state.highest_selected_day || this.state.start_select_date);
+
+			// find all events betweend start_date and highest_date
+			// map over them and set is_selected all dates that are between start date and current date
+
+			const days_between_start_and_max = _.filter(days_copy, day => {
+				return is_in_range(day, {start:this.state.start_select_date ,end:highest_date});
+			})
+
+			const to_select = _.filter(days_between_start_and_max, day => {
+				return is_in_range(day, {start:this.state.start_select_date, end:found.date})
+			})
+			const diff = _.filter(days_between_start_and_max, day => {
+				return !is_in_range(day, {start:this.state.start_select_date, end:found.date})
+			})			
+
+			_.each(diff, day => {
+				day.is_selected = false
+			});
+			
+			_.each(to_select, day => {
+				day.is_selected = true
+			});
+
+			/*
 			if(!found || found.is_event) return prev_state;
 			
 			if(!this.state.is_starting_on_selected_day && found.is_selected) {
@@ -203,9 +241,10 @@ class ScheduleListRow extends Component {
 			}
 			else {
 				found.is_selected = !this.state.is_starting_on_selected_day && !found.is_selected ? !found.is_selected : found.is_selected;
-			}
+			}*/
 			return {
 				days: days_copy,
+				highest_selected_day: highest_date
 			}
 		});				
 	}	
@@ -214,9 +253,6 @@ class ScheduleListRow extends Component {
 		if(!this.state.is_mouse_down) return;
 		this.setState( (prev_state, props) => {
 			const days_copy = this.state.days.slice();
-			const selected_days = days_copy.filter(day => day.is_selected === true);
-
-			selected_days.map(day => day.is_selected = false);
 			
 			return {
 				days:days_copy
@@ -234,6 +270,8 @@ class ScheduleListRow extends Component {
 		this.setState( (prev_state, props) => {
 			return {
 				is_mouse_down:false,
+				highest_selected_day:undefined,
+				start_select_date:undefined
 			}
 		});
 	};
