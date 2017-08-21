@@ -210,10 +210,7 @@ class ScheduleListRow extends Component {
 			if(!this.state.is_starting_on_selected_day) {
 				const highest_date = moment(found.date).isAfter(moment(this.state.highest_selected_day || this.state.start_select_date)) ? found.date : (this.state.highest_selected_day || this.state.start_select_date);
 				const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
-				console.log('lowest_date', moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date));
-				// find all events betweend start_date and highest_date
-				// map over them and set is_selected all dates that are between start date and current date
-
+				
 				const days_between_start_and_max = _.filter(days_copy, day => {
 					return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {end:this.state.start_select_date ,start:lowest_date});
 				})
@@ -252,6 +249,9 @@ class ScheduleListRow extends Component {
 				}				
 			} else {
 				found.is_selected = false;
+				return {
+					days: days_copy,
+				}				
 			}
 
 		});				
