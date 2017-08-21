@@ -128,7 +128,7 @@ describe('<ScheduleListRow/>', () => {
 		wrapper.instance()._handle_mouse_enter('display text 2', '2017-11-12', {preventDefault: () =>{}});
 		expect(wrapper.state().days[1].is_selected).toEqual(true);
 	});		
-	it('handles_mouse_enter sets selected state to false when already selected (and when starting on a non selected day)', () => {
+	it('handles_mouse_enter sets selected state to true when already selected (and when starting on a non selected day)', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
@@ -136,19 +136,22 @@ describe('<ScheduleListRow/>', () => {
 			days: [{
 				id:2,
 				is_selected:false,
-				display_text:'display text 1'
+				display_text:'display text 1',
+				date:'2017-11-10'
 			},
 			{
 				id:3,
 				is_selected:true,
-				display_text:'display text 2'
+				display_text:'display text 2',
+				date:'2017-11-11'
+
 			}]
 		});
-		wrapper.instance()._handle_mouse_enter('display text 1', '2017-11-10', {preventDefault: () =>{}});
+		wrapper.instance()._handle_mouse_down('display text 1', '2017-11-10', {preventDefault: () =>{}});
 		wrapper.instance()._handle_mouse_enter('display text 2', '2017-11-11', {preventDefault: () =>{}});
 		expect(wrapper.state().days[1].is_selected).toEqual(true);
 	});	
-	it('handles_mouse_enter sets selected state to false when already selected (and when starting on a selected day)', () => {
+	it('handles_mouse_enter sets selected state from true to false when already selected (and when starting on a selected day)', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
 		wrapper.setState({
@@ -169,7 +172,7 @@ describe('<ScheduleListRow/>', () => {
 		expect(wrapper.state().days[1].is_selected).toEqual(false);
 	});	
 
-	it('never selects again on mouse_enter and starting on selected day', () => {
+	it.skip('never selects again on mouse_enter and starting on selected day', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);		
 		wrapper.setState({
@@ -248,7 +251,7 @@ describe('<ScheduleListRow/>', () => {
 		wrapper.instance()._handle_mouse_enter('display text 111', '2017-11-11', {preventDefault: () =>{}});
 		expect(wrapper.state().days[1].is_selected).toEqual(false);
 	});	
-	
+
 	it('deselects a selected day when dragselecting left and then going right', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
@@ -354,21 +357,15 @@ describe('<ScheduleListRow/>', () => {
 		wrapper.setState({
 			days: [{
 				id:1,
-				is_selected:false,
+				is_selected:true,
 				is_event:false,
-				display_text:'display text 1'
-			},
-			{
-				id:2,
-				is_selected:false,
-				is_event:true,
-				display_text:'display text 2'				
+				display_text:'display text 1',
+				date:'2017-11-11'
 			}]
 		});
 
 		wrapper.instance()._handle_mouse_down('display text 1', '2017-11-11', {preventDefault:() =>{}});
-		wrapper.instance()._handle_mouse_enter('display text 2', '2017-11-11', {preventDefault: () =>{}});
-		expect(wrapper.state().days[1].is_selected).toEqual(false);
+		expect(wrapper.state().days[0].is_selected).toEqual(false);
 	});
 
 	it('marks a day as an event if date is in an event range', () => {

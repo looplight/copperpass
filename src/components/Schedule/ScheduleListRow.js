@@ -207,49 +207,53 @@ class ScheduleListRow extends Component {
 			});
 
 			// select in the 'right' direction
+			if(!this.state.is_starting_on_selected_day) {
+				const highest_date = moment(found.date).isAfter(moment(this.state.highest_selected_day || this.state.start_select_date)) ? found.date : (this.state.highest_selected_day || this.state.start_select_date);
+				const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
+				console.log('lowest_date', moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date));
+				// find all events betweend start_date and highest_date
+				// map over them and set is_selected all dates that are between start date and current date
 
-			const highest_date = moment(found.date).isAfter(moment(this.state.highest_selected_day || this.state.start_select_date)) ? found.date : (this.state.highest_selected_day || this.state.start_select_date);
-			const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
-			console.log('lowest_date', moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date));
-			// find all events betweend start_date and highest_date
-			// map over them and set is_selected all dates that are between start date and current date
+				const days_between_start_and_max = _.filter(days_copy, day => {
+					return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {end:this.state.start_select_date ,start:lowest_date});
+				})
 
-			const days_between_start_and_max = _.filter(days_copy, day => {
-				return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {end:this.state.start_select_date ,start:lowest_date});
-			})
+				const to_select = _.filter(days_between_start_and_max, day => {
+					return is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {end:this.state.start_select_date, start:found.date})
+				})
+				const diff = _.filter(days_between_start_and_max, day => {
+					return !is_in_range(day, {start:this.state.start_select_date, end:found.date})
+				})			
 
-			const to_select = _.filter(days_between_start_and_max, day => {
-				return is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {end:this.state.start_select_date, start:found.date})
-			})
-			const diff = _.filter(days_between_start_and_max, day => {
-				return !is_in_range(day, {start:this.state.start_select_date, end:found.date})
-			})			
+				_.each(diff, day => {
+					day.is_selected = false
+				});
+				
+				_.each(to_select, day => {
+					day.is_selected = true
+				});
 
-			_.each(diff, day => {
-				day.is_selected = false
-			});
-			
-			_.each(to_select, day => {
-				day.is_selected = true
-			});
-
-			/*
-			if(!found || found.is_event) return prev_state;
-			
-			if(!this.state.is_starting_on_selected_day && found.is_selected) {
-				found.is_selected = true;	
-			} 
-			else if(this.state.is_starting_on_selected_day && found.is_selected) {
+				/*
+				if(!found || found.is_event) return prev_state;
+				
+				if(!this.state.is_starting_on_selected_day && found.is_selected) {
+					found.is_selected = true;	
+				} 
+				else if(this.state.is_starting_on_selected_day && found.is_selected) {
+					found.is_selected = false;
+				}
+				else {
+					found.is_selected = !this.state.is_starting_on_selected_day && !found.is_selected ? !found.is_selected : found.is_selected;
+				}*/
+				return {
+					days: days_copy,
+					highest_selected_day: highest_date,
+					lowest_selected_day:lowest_date
+				}				
+			} else {
 				found.is_selected = false;
 			}
-			else {
-				found.is_selected = !this.state.is_starting_on_selected_day && !found.is_selected ? !found.is_selected : found.is_selected;
-			}*/
-			return {
-				days: days_copy,
-				highest_selected_day: highest_date,
-				lowest_selected_day:lowest_date
-			}
+
 		});				
 	}	
 	_handle_mouse_leave(display_text, event) {
