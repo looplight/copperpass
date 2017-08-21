@@ -231,13 +231,15 @@ describe('<ScheduleListRow/>', () => {
 				id:1,
 				is_selected:false,
 				is_event:false,
-				display_text:'display text 111'
+				display_text:'display text 111',
+				date:'2017-11-11'
 			},
 			{
 				id:2,
 				is_selected:false,
 				is_event:false,
-				display_text:'display text 222'				
+				display_text:'display text 222',
+				date:'2017-11-12'
 			}]
 		});
 
@@ -246,7 +248,7 @@ describe('<ScheduleListRow/>', () => {
 		wrapper.instance()._handle_mouse_enter('display text 111', '2017-11-11', {preventDefault: () =>{}});
 		expect(wrapper.state().days[1].is_selected).toEqual(false);
 	});	
-
+	
 	it('deselects a selected day when dragselecting left and then going right', () => {
 		const my_date =  moment('2016-01-01');
 		const wrapper = shallow(<ScheduleListRow today={my_date} row={row}/>);
@@ -258,19 +260,21 @@ describe('<ScheduleListRow/>', () => {
 				id:1,
 				is_selected:false,
 				is_event:false,
-				display_text:'display text 111'
+				display_text:'display text 111',
+				date:'2017-11-11'
 			},
 			{
 				id:2,
 				is_selected:false,
 				is_event:false,
-				display_text:'display text 222'				
+				display_text:'display text 222',
+				date:'2017-11-12'
 			}]
 		});
 
-		wrapper.instance()._handle_mouse_enter('display text 222', '2017-11-12', {preventDefault:() =>{}});
+		wrapper.instance()._handle_mouse_down('display text 222', '2017-11-12', {preventDefault:() =>{}});
 		wrapper.instance()._handle_mouse_enter('display text 111', '2017-11-11', {preventDefault: () =>{}});
-
+		expect(wrapper.state().days[0].is_selected).toEqual(true);
 		wrapper.instance()._handle_mouse_enter('display text 222', '2017-11-12', {preventDefault: () =>{}});
 		expect(wrapper.state().days[0].is_selected).toEqual(false);
 	});	

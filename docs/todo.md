@@ -14,6 +14,7 @@
 
 [x] When calling function with selected range, also send the row id
 [x] Use state for selected ranges
+[ ] Refactors is_in_range so that it is not dependent on which order is start and which is end !!!
 [ ] in tests, send the date on day state instead of passing it into the event handler funcstions as a separate paramater
 [ ] Check that all days are selected after drag selecting betweend date_1 and date_2
 [ ] Make sure we do checks agains date strings/dates and not display_text

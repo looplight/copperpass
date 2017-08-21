@@ -48,7 +48,8 @@ class ScheduleListRow extends Component {
       		is_starting_on_selected_day: undefined,
       		days: [],
       		start_select_date:undefined,
-      		highest_selected_day:undefined
+      		highest_selected_day:undefined,
+      		lowest_selected_day:undefined
     	};
 	}
 
@@ -206,17 +207,19 @@ class ScheduleListRow extends Component {
 			});
 
 			// select in the 'right' direction
-			const highest_date = moment(found.date).isAfter(moment(this.state.highest_selected_day)) ? found.date : (this.state.highest_selected_day || this.state.start_select_date);
 
+			const highest_date = moment(found.date).isAfter(moment(this.state.highest_selected_day || this.state.start_select_date)) ? found.date : (this.state.highest_selected_day || this.state.start_select_date);
+			const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
+			console.log('lowest_date', moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date));
 			// find all events betweend start_date and highest_date
 			// map over them and set is_selected all dates that are between start date and current date
 
 			const days_between_start_and_max = _.filter(days_copy, day => {
-				return is_in_range(day, {start:this.state.start_select_date ,end:highest_date});
+				return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {end:this.state.start_select_date ,start:lowest_date});
 			})
 
 			const to_select = _.filter(days_between_start_and_max, day => {
-				return is_in_range(day, {start:this.state.start_select_date, end:found.date})
+				return is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {end:this.state.start_select_date, start:found.date})
 			})
 			const diff = _.filter(days_between_start_and_max, day => {
 				return !is_in_range(day, {start:this.state.start_select_date, end:found.date})
@@ -244,7 +247,8 @@ class ScheduleListRow extends Component {
 			}*/
 			return {
 				days: days_copy,
-				highest_selected_day: highest_date
+				highest_selected_day: highest_date,
+				lowest_selected_day:lowest_date
 			}
 		});				
 	}	
@@ -271,6 +275,7 @@ class ScheduleListRow extends Component {
 			return {
 				is_mouse_down:false,
 				highest_selected_day:undefined,
+				lowest_selected_day:undefined,
 				start_select_date:undefined
 			}
 		});
