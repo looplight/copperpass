@@ -73,7 +73,7 @@ class ScheduleListRow extends Component {
 	handle_click_outside(event) {
 		const domNode = ReactDOM.findDOMNode(this);
 	    if ((!domNode || !domNode.contains(event.target))) {
-	    	
+	    	this._handle_mouse_up('8')
 			this.setState( (prev_state, props) => {
 				return {
 					is_mouse_down:false
@@ -268,11 +268,7 @@ class ScheduleListRow extends Component {
 		});		
 	}
 
-	_handle_mouse_up(display_text) {
-		const found = this.state.days.find((day) => {
-			return day.display_text === display_text;
-		});
-		
+	_handle_mouse_up(display_text) {		
 		if(true) this.props.update(this._get_selected_ranges());
 
 		this.setState( (prev_state, props) => {

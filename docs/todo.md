@@ -1,3 +1,6 @@
+
+
+
 [x] Change data state in ScheduleListRow to be a "pure" array of data
 [x] Build ScheduleListDay array from state.data
 [x] Refactor handle_mouse_click
@@ -14,6 +17,10 @@
 
 [x] When calling function with selected range, also send the row id
 [x] Use state for selected ranges
+
+[x] Handle mouse up when outside of row
+
+[ ] what is happening when selecting new range on sides of an event (dragselecting over the event), creating new events and then clicking the middle one
 [ ] Refactors is_in_range so that it is not dependent on which order is start and which is end !!!
 [ ] in tests, send the date on day state instead of passing it into the event handler funcstions as a separate paramater
 [ ] Check that all days are selected after drag selecting betweend date_1 and date_2
