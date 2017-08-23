@@ -27,7 +27,11 @@ const is_in_range = (date, range) => {
 	let tmp = range.start;
 
 	range.start = moment(range.start).isBefore(range.end) ? range.start : range.end;
-	range.end = range.end = range.start ? range.end : tmp;
+	range.end = range.start === range.end ? tmp : range.end;
+
+
+	console.log(range.start, ' - ', range.end);
+
 
 	const found_in_range = moment(date.date).isBetween(moment(range.start), moment(range.end), null, '[]');
 	return !!found_in_range;
