@@ -20,10 +20,9 @@
 
 [x] Handle mouse up when outside of row
 
-[ ] what is happening when selecting new range on sides of an event (dragselecting over the event), creating new events and then clicking the middle one
-[ ] Refactors is_in_range so that it is not dependent on which order is start and which is end !!!
+[x] Bug when creating new events on the side of an already existing event ()
+[x] is_in_range should not care about order of "start" and "end"
 [ ] in tests, send the date on day state instead of passing it into the event handler funcstions as a separate paramater
-[ ] Check that all days are selected after drag selecting betweend date_1 and date_2
 [ ] Make sure we do checks agains date strings/dates and not display_text
 [ ] Styles for range start/end date
 [ ] Rename prop.row to something else (prop.data?)
@@ -37,9 +36,9 @@
 
 [ ] Month pagination
 [ ] Display week numbers
-[ ] Table header needs to be fixed
+[ ] Table header needs to be in a fixed position
 [ ] Theme/style as props to Schedule
-[ ] Gravatar component
+[ ] Gravatar component (probably app level and not in Schedule)
 [ ] Live update of days left when selecting days
 
 [ ] Add support for non-full days
@@ -52,4 +51,4 @@
 
 [ ] Make hover fade in, try different colors
 [ ] Create responsive layouts
-[ ] Write "Advance" function that advances between events
+[ ] Write "advance" function that advances between events

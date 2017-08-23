@@ -42,6 +42,7 @@ class App extends Component {
     _handle_ranges(data) {
         //add to new selected_ranges state array, make sure we tag it with the row id
         this.setState((prev_state,props) => {
+            console.log('called');
             let rows_copy = prev_state.rows.slice();
             let found = _.find(rows_copy, row => row.id === data.id);
             found.selected_ranges = data.ranges;

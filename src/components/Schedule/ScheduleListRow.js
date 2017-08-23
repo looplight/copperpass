@@ -24,6 +24,11 @@ const find_range = (date, props) => {
 }
 
 const is_in_range = (date, range) => {
+	let tmp = range.start;
+
+	range.start = moment(range.start).isBefore(range.end) ? range.start : range.end;
+	range.end = range.end = range.start ? range.end : tmp;
+
 	const found_in_range = moment(date.date).isBetween(moment(range.start), moment(range.end), null, '[]');
 	return !!found_in_range;
 }
@@ -73,7 +78,7 @@ class ScheduleListRow extends Component {
 	handle_click_outside(event) {
 		const domNode = ReactDOM.findDOMNode(this);
 	    if ((!domNode || !domNode.contains(event.target))) {
-	    	this._handle_mouse_up('8')
+	    	this._handle_mouse_up('', !!this.state.start_select_date)
 			this.setState( (prev_state, props) => {
 				return {
 					is_mouse_down:false
@@ -212,11 +217,11 @@ class ScheduleListRow extends Component {
 				const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
 				
 				const days_between_start_and_max = _.filter(days_copy, day => {
-					return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {end:this.state.start_select_date ,start:lowest_date});
+					return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {start:this.state.start_select_date ,end:lowest_date});
 				})
 
 				const to_select = _.filter(days_between_start_and_max, day => {
-					return is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {end:this.state.start_select_date, start:found.date})
+					return is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {start:this.state.start_select_date, end:found.date})
 				})
 				const diff = _.filter(days_between_start_and_max, day => {
 					return !is_in_range(day, {start:this.state.start_select_date, end:found.date})
@@ -268,8 +273,8 @@ class ScheduleListRow extends Component {
 		});		
 	}
 
-	_handle_mouse_up(display_text) {		
-		if(true) this.props.update(this._get_selected_ranges());
+	_handle_mouse_up(display_text, should_update) {		
+		if(should_update) this.props.update(this._get_selected_ranges());
 
 		this.setState( (prev_state, props) => {
 			return {
