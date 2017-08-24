@@ -10,8 +10,12 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
-.schedule tr {
-	cursor: pointer;
+
+.default-cursor {
+  cursor:default;
+}
+.pointer {
+  cursor: pointer; 
 }
 .schedule  td.hover:hover { 
    background-color: #ccc;

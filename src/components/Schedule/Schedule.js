@@ -13,6 +13,11 @@ class Schedule extends Component {
   componentDidMount() {
     console.log('Mounted!');
   }
+
+  _test() {
+
+  }
+
   render() {
     return (
       <div>

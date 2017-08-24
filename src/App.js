@@ -3,7 +3,8 @@ import moment                from 'moment';
 import ReactDOM              from 'react-dom';
 import _                     from 'lodash';
 import Schedule              from './components/Schedule/Schedule';
-import Button              from './components/Common/Button';
+import ScheduleControls      from './components/Schedule/ScheduleControls';
+import Button                from './components/Common/Button';
 class App extends Component {
     constructor(props) {
         super(props);
@@ -77,6 +78,7 @@ class App extends Component {
     render() {
         return (
             <div className="container">
+                <ScheduleControls month={'August'}/>
                 <Schedule rows={this.state.rows} today={moment()} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
                 <Button handle_mouse_down={this._create_events.bind(this)}/>
             </div>)

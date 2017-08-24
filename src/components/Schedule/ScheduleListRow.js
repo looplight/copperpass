@@ -304,7 +304,7 @@ class ScheduleListRow extends Component {
   			/>
   		});
   		// onMouseLeave is bypassed for now
-  		return ( <tr onMouseLeave={this._handle_mouse_leave}>{days}</tr> )
+  		return ( <tr className="pointer" onMouseLeave={this._handle_mouse_leave}>{days}</tr> )
   	};
 }
 
