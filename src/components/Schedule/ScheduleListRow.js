@@ -6,7 +6,7 @@ import ReactDOM 			 from 'react-dom';
 import _ 					 from 'lodash';
 
 
-// @Refactor - steamline these functions
+// @Refactor - streamline these functions
 const is_event = (date, state) => {
 	if(!state.events || !state.events.length) return false;	
 
@@ -29,11 +29,6 @@ const is_in_range = (date, range) => {
 	range.end = range.start === range.end ? tmp : range.end;
 	const found_in_range = moment(date.date).isBetween(moment(range.start), moment(range.end), null, '[]');
 	return !!found_in_range;
-}
-
-
-const select_range = (range, state) => {
-
 }
 
 class ScheduleListRow extends Component {
@@ -59,7 +54,7 @@ class ScheduleListRow extends Component {
 	componentDidMount() {
 		document.addEventListener('mouseup', this.handle_click_outside.bind(this), true);	
 		this.setState({
-			days: this._build_columns(this.props.today, this.props.row.events)
+			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
 		});
 	}
 
@@ -69,7 +64,7 @@ class ScheduleListRow extends Component {
 	componentWillReceiveProps() {
 		this.setState({
 			//events: this.props.row.events,
-			days: this._build_columns(this.props.today, this.props.row.events)
+			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
 		});		
 	}
 
@@ -84,8 +79,8 @@ class ScheduleListRow extends Component {
 			});	    	
 	    }		
 	}
-	_build_columns(today, events) {
-		const dem_ranges = this._get_selected_ranges();
+	_build_columns(today, events, selected_ranges) {
+		//const dem_ranges = this._get_selected_ranges();
 		const is_weekend = date => {
 			return date.day() % 6 === 0;
 		}
@@ -100,7 +95,7 @@ class ScheduleListRow extends Component {
 			//if(!selected_ranges || !selected_ranges.length) return false;	
 			
 			// find date in _get_selected_ranges
-			const test = _.find(dem_ranges.ranges, range => moment(date.format('YYYY-MM-DD')).isBetween(moment(range.start), moment(range.end), null, '[]'));
+			const test = _.find(selected_ranges, range => moment(date.format('YYYY-MM-DD')).isBetween(moment(range.start), moment(range.end), null, '[]'));
 			//const found_in_range = _.find(selected_ranges, range => moment(date.format('YYYY-MM-DD')).isBetween(moment(range.start), moment(range.end), null, '[]'));
 			
 			return !!test;

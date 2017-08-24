@@ -4,7 +4,6 @@ import ScheduleHeaderRow from './ScheduleHeaderRow';
 
 const ScheduleList = ({rows, today, update, event_click}) => {
 	const handle_update = (data) => {
-		console.log('selected range', data.ranges);
 		update(data);
 	}
 	return (

@@ -9,10 +9,9 @@ class App extends Component {
     constructor(props) {
         super(props);
         this._handle_ranges          = this._handle_ranges.bind(this);
-        this.d = undefined;
         //NOTE(daniel): maybe some of these should be received via props?
         this.state = {
-            month:moment(),
+            month:moment().startOf('month'),
             selected_ranges:undefined,
             rows:[
             {id:1, title:'Daniel', subtitle:'code monkii 1',
@@ -34,7 +33,7 @@ class App extends Component {
        
        rows_copy = rows_copy.map(row => {
             row.events = [...row.events, ...row.selected_ranges];
-            ///row.selected_ranges = [];
+            row.selected_ranges = [];
        });
 
        this.setState((prev_state, props) => {
@@ -47,7 +46,7 @@ class App extends Component {
             console.log('called');
             let rows_copy = prev_state.rows.slice();
             let found = _.find(rows_copy, row => row.id === data.id);
-            found.selected_ranges = data.ranges;
+            found.selected_ranges = [...found.selected_ranges, ...data.ranges];
 
             return {
                 rows: rows_copy

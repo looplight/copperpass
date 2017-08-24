@@ -24,6 +24,8 @@
 [x] is_in_range should not care about order of "start" and "end"
 [x] Calendar controls
 [ ] Fixed number of days (spacers) so that calendar doesn’t jump around when switching date
+    [ ] Always render 5 weeks worht of cells
+    [ ] Center month days in row
 [ ] in tests, send the date on day state instead of passing it into the event handler funcstions as a separate paramater
 [ ] Make sure we do checks agains date strings/dates and not display_text
 [ ] Styles for range start/end date
