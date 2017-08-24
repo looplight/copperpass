@@ -12,6 +12,7 @@ class App extends Component {
         this.d = undefined;
         //NOTE(daniel): maybe some of these should be received via props?
         this.state = {
+            month:moment(),
             selected_ranges:undefined,
             rows:[
             {id:1, title:'Daniel', subtitle:'code monkii 1',
@@ -75,14 +76,24 @@ class App extends Component {
         });
     }
 
+    _on_previous() {
+        this.setState({month:this.state.month.subtract(1,'month')})
+    }
+
+    _on_next() {
+        this.setState({month:this.state.month.add(1,'month')})
+    }
+
+
     render() {
+        const { rows, month } = this.state;
         return (
             <div className="container">
-                <ScheduleControls month={'August'}/>
-                <Schedule rows={this.state.rows} today={moment()} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
+                <ScheduleControls month={'August'} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
+                <Schedule rows={rows} today={month} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
                 <Button handle_mouse_down={this._create_events.bind(this)}/>
             </div>)
-    };
+    }
 }
 
 export default App;
