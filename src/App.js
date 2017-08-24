@@ -69,7 +69,6 @@ class App extends Component {
                 })
                 return row;
             });
-
             return {
                 rows: new_rows
             }
@@ -77,7 +76,7 @@ class App extends Component {
     }
 
     _on_previous() {
-        this.setState({month:this.state.month.subtract(1,'month')})
+        this.setState({month:this.state.month.subtract(1,'month').startOf('month')})
     }
 
     _on_next() {
@@ -89,7 +88,7 @@ class App extends Component {
         const { rows, month } = this.state;
         return (
             <div className="container">
-                <ScheduleControls month={'August'} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
+                <ScheduleControls month={month.format('MMM')} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
                 <Schedule rows={rows} today={month} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
                 <Button handle_mouse_down={this._create_events.bind(this)}/>
             </div>)
