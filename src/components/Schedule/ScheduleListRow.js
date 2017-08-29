@@ -61,7 +61,7 @@ class ScheduleListRow extends Component {
 	componentWillUnmount() {
 	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);		
 	}
-	componentWillReceiveProps() {
+	componentWillReceiveProps(new_props) {
 		this.setState({
 			//events: this.props.row.events,
 			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
@@ -103,13 +103,41 @@ class ScheduleListRow extends Component {
 		// id day is in an event range, mark it as an event with correct class and event id (?)
 		const days_in_month = today.daysInMonth();
 		const days = [];
-		for(let i = 0; i < days_in_month; i++) {
-			const day = moment(today).add(i, 'day');
+		const previous_month_days = 3;
+		const next_month_days     =  37 - days_in_month - 3;
+		console.log('days to insert before', previous_month_days);
+		console.log('days to insert after', next_month_days);
+		for(let i = 0; i < 37; i++) {
+			if(i < previous_month_days) {
+				days.push({
+					id:i,
+					//is_weekend:true,
+					is_outside_of_current_month:true,
+					display_text:'',
+					handle_mouse_click:this._handle_mouse_down,
+					handle_mouse_enter:this._handle_mouse_enter,
+					handle_mouse_down: this._handle_mouse_down,
+					handle_mouse_up: this._handle_mouse_up,					
+				})
+			}
+			if(i >= days_in_month + previous_month_days) {
+				days.push({
+					id:i,
+					//is_weekend:true,
+					is_outside_of_current_month:true,
+					display_text:'',
+					handle_mouse_click:this._handle_mouse_down,
+					handle_mouse_enter:this._handle_mouse_enter,
+					handle_mouse_down: this._handle_mouse_down,
+					handle_mouse_up: this._handle_mouse_up,					
+				})		
+			}	
+			const day = moment(today).add(i - previous_month_days, 'day');
 			//let full_day_text = day.format('YYYY-MM-DD');
 			const day_text = day.format('D');
 
 			//TODO(daniel): refactor out this duplication
-			if(is_weekend(day)) {
+			if(is_weekend(day) && i > previous_month_days && i < days_in_month + previous_month_days ) {
 				days.push({
 					id:i,
 					is_weekend:true,
@@ -123,7 +151,7 @@ class ScheduleListRow extends Component {
 					handle_mouse_up: this._handle_mouse_up,
 					
 				});
-			} else {
+			} else if (i >= previous_month_days && i < days_in_month + previous_month_days){
 				days.push({
 					id:i,
 					is_weekend:false,
@@ -296,6 +324,8 @@ class ScheduleListRow extends Component {
 	  			handle_mouse_enter={day.handle_mouse_enter}
 	  			handle_mouse_up={day.handle_mouse_up}
 	  			handle_mouse_leave={day.handle_mouse_leave}
+	  			is_outside_of_current_month={day.is_outside_of_current_month}
+
   			/>
   		});
   		// onMouseLeave is bypassed for now

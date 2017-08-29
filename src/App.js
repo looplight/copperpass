@@ -22,8 +22,39 @@ class App extends Component {
             },
             {id:2, title:'Peter', subtitle:'code monkii 2',
                 events: [
-                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[]
-            },                                               
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },
+{id:3, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },    
+{id:4, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },    
+
+{id:5, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },    
+{id:6, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },    
+{id:7, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },    
+
+{id:8, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },    
+
+{id:9, title:'Peter', subtitle:'code monkii 2',
+                events: [
+                    {start:'2017-08-07', end:'2017-08-11'}], selected_ranges:[{start:'2017-08-01', end:'2017-08-04'}]
+            },                                                                                                                                   
         ]
         };
     }
@@ -45,8 +76,9 @@ class App extends Component {
         this.setState((prev_state,props) => {
             console.log('called');
             let rows_copy = prev_state.rows.slice();
-            let found = _.find(rows_copy, row => row.id === data.id);
-            found.selected_ranges = [...found.selected_ranges, ...data.ranges];
+            let found_row = _.find(rows_copy, row => row.id === data.id);
+
+            found_row.selected_ranges = data.ranges;
 
             return {
                 rows: rows_copy
@@ -85,9 +117,10 @@ class App extends Component {
 
     render() {
         const { rows, month } = this.state;
+        const s = {"margin-left":"100px", "margin-right":"100px","margin-top":"50px"}    
         return (
-            <div className="container">
-                <ScheduleControls month={month.format('MMM')} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
+            <div className="" style={s}>
+                <ScheduleControls month={month.format('MMM YYYY')} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
                 <Schedule rows={rows} today={month} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
                 <Button handle_mouse_down={this._create_events.bind(this)}/>
             </div>)

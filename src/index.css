@@ -10,7 +10,16 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
-
+table{
+    table-layout: fixed;
+    width: 100%;
+}
+table td {
+  font-size:0.8em;
+}
+table th {
+  font-size:0.8em;
+}
 .default-cursor {
   cursor:default;
 }
@@ -25,12 +34,17 @@ body {
 }
 .selected {
 	background-color: #4A96AD;
-    color: #FFFFFF;
+  color: #FFFFFF;
 }
 
 .event {
-    background-color: #7D1935;
+    background-color: #f0ad4e/*#7D1935*/;
+
     color: #FFFFFF;
+}
+.is-outside {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAABZJREFUCB1jYEADmzdv/o8iRA0BoIEAKngPeSAlnXcAAAAASUVORK5CYII=')
+  
 }
 .grad {
   color: white;

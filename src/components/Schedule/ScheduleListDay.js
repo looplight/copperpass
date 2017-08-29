@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event, handle_mouse_down, handle_mouse_enter, handle_mouse_up, handle_mouse_leave}) => {
+const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event, handle_mouse_down, handle_mouse_enter, handle_mouse_up, handle_mouse_leave,is_outside_of_current_month}) => {
 	const _handle_mouse_down = (event) => {
 		handle_mouse_down(display_text, date, event);
 	};
@@ -16,12 +16,13 @@ const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event,
 		if(is_selected) className  += ' selected';
 		if(is_event)    className  += ' event';
 		if(!is_selected && !is_event) className += ' hover';
+		if(is_outside_of_current_month) className = 'is-outside'
+		className += ''
 		return className;
 	};
-	const style = {border:'1px solid black'};
-	const fixed_style= {'table-layout': 'fixed', 'width':'11%'};
+
 	const className = build_class();
-	return <td data-date={date} className={className} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up} onMouseLeave={handle_mouse_leave}>{display_text}</td>;
+	return <td data-date={date}  className={className} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up} onMouseLeave={handle_mouse_leave}>{display_text}</td>;
 };
 
 export default ScheduleListDay;

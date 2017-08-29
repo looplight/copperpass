@@ -6,9 +6,9 @@ const build_header = (today) => {
 	let day_name;
 	let header_columns = [];
 
-	for(let i = 0; i < number_of_days; i++) {
+	for(let i = 0; i < 37; i++) {
 		day_name = moment(today).add(i, 'days').format('ddd').toUpperCase();
-		let header_row = <th key={i}>{day_name.slice(0,1)}</th>;
+		let header_row = <th className="text-center" key={i}>{day_name.slice(0,1)}</th>;
 		header_columns.push(header_row);
 	}
 	return (header_columns)
@@ -21,3 +21,4 @@ const ScheduleHeaderRow = ({today}) => {
 }
 
 export default ScheduleHeaderRow;
+
