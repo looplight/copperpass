@@ -1,19 +1,9 @@
-import React, { Component }  from 'react';
+import React 			 	 from 'react';
 import moment 				 from 'moment';
 import ScheduleListDay 		 from './ScheduleListDay';
-import Button 		 		 from '../Common/Button';
 import ReactDOM 			 from 'react-dom';
 import _ 					 from 'lodash';
-
-
-// @Refactor - streamline these functions
-const is_event = (date, state) => {
-	if(!state.events || !state.events.length) return false;	
-
-	//check state.events for a range containing 'date'
-	const found_in_event = _.find(state.events, event => moment(date).isBetween(moment(event.start), moment(event.end), null, '[]'));
-	return !!found_in_event;
-}
+import shallowEqual 		 from 'shallowequal'
 
 const find_range = (date, props) => {
 	if(!props.row.events || !props.row.events.length) return false;	
@@ -31,27 +21,28 @@ const is_in_range = (date, range) => {
 	return !!found_in_range;
 }
 
-class ScheduleListRow extends Component {
+class ScheduleListRow extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this._handle_mouse_down 		 = this._handle_mouse_down.bind(this);
 		this._handle_mouse_enter 		 = this._handle_mouse_enter.bind(this)
 		this._handle_mouse_up    		 = this._handle_mouse_up.bind(this);
 		this._handle_mouse_leave		 = this._handle_mouse_leave.bind(this);
-		this._handle_save		 		 = this._handle_save.bind(this);
 
 		//NOTE(daniel): maybe some of these should be received via props?
 		this.state = {
       		is_mouse_down: false, // is selecting
       		is_starting_on_selected_day: undefined,
       		days: [],
+      		events:[],
+      		selected_ranges:[],
       		start_select_date:undefined,
       		highest_selected_day:undefined,
       		lowest_selected_day:undefined
     	};
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		document.addEventListener('mouseup', this.handle_click_outside.bind(this), true);	
 		this.setState({
 			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
@@ -61,17 +52,20 @@ class ScheduleListRow extends Component {
 	componentWillUnmount() {
 	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);		
 	}
-	componentWillReceiveProps(new_props) {
+	shouldComponentUpdate(nextProps, nextState, nextContext) {
+		return !shallowEqual(nextProps.row,this.props.row) || this.state.is_mouse_down !== nextState.is_mouse_down || !shallowEqual( _.map(nextState.days, 'is_selected'), _.map(this.state.days, 'is_selected'));
+	}
+	componentWillReceiveProps(nextProps) {
 		this.setState({
 			//events: this.props.row.events,
 			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
-		});		
+		});
 	}
 
 	handle_click_outside(event) {
 		const domNode = ReactDOM.findDOMNode(this);
 	    if ((!domNode || !domNode.contains(event.target))) {
-	    	this._handle_mouse_up('', !!this.state.start_select_date)
+	    	this._handle_mouse_up('', !!this.state.start_select_date);
 			this.setState( (prev_state, props) => {
 				return {
 					is_mouse_down:false
@@ -80,7 +74,6 @@ class ScheduleListRow extends Component {
 	    }		
 	}
 	_build_columns(today, events, selected_ranges) {
-		//const dem_ranges = this._get_selected_ranges();
 		const is_weekend = date => {
 			return date.day() % 6 === 0;
 		}
@@ -104,9 +97,6 @@ class ScheduleListRow extends Component {
 		const days_in_month = today.daysInMonth();
 		const days = [];
 		const previous_month_days = 3;
-		const next_month_days     =  37 - days_in_month - 3;
-		console.log('days to insert before', previous_month_days);
-		console.log('days to insert after', next_month_days);
 		for(let i = 0; i < 37; i++) {
 			if(i < previous_month_days) {
 				days.push({
@@ -200,7 +190,7 @@ class ScheduleListRow extends Component {
 	_handle_mouse_down(display_text, date, event) {
 		event.preventDefault();
 		this.setState((prev_state, props) => {
-			const days_copy = prev_state.days.slice();
+			const days_copy = _.cloneDeep(prev_state.days);
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
@@ -227,7 +217,7 @@ class ScheduleListRow extends Component {
 	_handle_mouse_enter(display_text, date, event) {
 		if(!this.state.is_mouse_down) return;
 		this.setState((prev_state, props) => {
-			const days_copy = prev_state.days.slice();
+			const days_copy = _.cloneDeep(prev_state.days);
 			const found = days_copy.find((day) => {
 				return day.display_text === display_text;
 			});
@@ -238,15 +228,14 @@ class ScheduleListRow extends Component {
 				const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
 				
 				const days_between_start_and_max = _.filter(days_copy, day => {
-					return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {start:this.state.start_select_date ,end:lowest_date});
+					return !day.is_outside_of_current_month && (is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {start:this.state.start_select_date ,end:lowest_date}));
 				})
-
 				const to_select = _.filter(days_between_start_and_max, day => {
 					return is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {start:this.state.start_select_date, end:found.date})
 				})
 				const diff = _.filter(days_between_start_and_max, day => {
 					return !is_in_range(day, {start:this.state.start_select_date, end:found.date})
-				})			
+				})
 
 				_.each(diff, day => {
 					day.is_selected = false
@@ -284,14 +273,15 @@ class ScheduleListRow extends Component {
 	}	
 	_handle_mouse_leave(display_text, event) {
 		return;
+		/*
 		if(!this.state.is_mouse_down) return;
 		this.setState( (prev_state, props) => {
-			const days_copy = this.state.days.slice();
-			
+			const days_copy = _.cloneDeep(this.state.days);
 			return {
 				days:days_copy
 			}
 		});		
+		*/
 	}
 
 	_handle_mouse_up(display_text, should_update) {		
@@ -306,12 +296,9 @@ class ScheduleListRow extends Component {
 			}
 		});
 	};
-	
-	_handle_save() {
-		console.log('called _handle_save');
-	}
 
   	render() {
+  		//const d = this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges);
   		const days = this.state.days.map((day) => {
   			return <ScheduleListDay 
 	  			key={day.id}

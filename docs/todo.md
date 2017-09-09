@@ -1,4 +1,6 @@
-
+IMPORTANT!
+[x] Sometimes the ranges sent back to 'Update' sets start and/or end to undefined, happend when startin on 4 5 6 and/or ending on 7
+    should ne a bug in _get_selected_ranges
 
 
 [x] Change data state in ScheduleListRow to be a "pure" array of data

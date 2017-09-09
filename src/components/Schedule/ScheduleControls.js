@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import moment               from 'moment';
+import React    from 'react';
 
 const ScheduleControls = ({on_previous,on_next,month,}) => {
     return (

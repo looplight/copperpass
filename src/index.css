@@ -13,12 +13,16 @@ body {
 table{
     table-layout: fixed;
     width: 100%;
+
 }
 table td {
   font-size:0.8em;
+  border-bottom:30px solid #eceeef;
 }
+
 table th {
   font-size:0.8em;
+  border-bottom:30px solid #eceeef;
 }
 .default-cursor {
   cursor:default;

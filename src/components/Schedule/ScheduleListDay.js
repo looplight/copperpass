@@ -21,6 +21,7 @@ const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event,
 		return className;
 	};
 
+	
 	const className = build_class();
 	return <td data-date={date}  className={className} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up} onMouseLeave={handle_mouse_leave}>{display_text}</td>;
 };

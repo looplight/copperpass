@@ -1,7 +1,4 @@
-import React, { Component }  from 'react';
-import moment                from 'moment';
-import ReactDOM              from 'react-dom';
-import _                     from 'lodash';
+import React     from 'react';
 
 const Button = ({handle_mouse_down}) => {
     return (<button 

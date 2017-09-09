@@ -1,6 +1,5 @@
 import React, { Component }  from 'react';
 import moment                from 'moment';
-import ReactDOM              from 'react-dom';
 import _                     from 'lodash';
 import Schedule              from './components/Schedule/Schedule';
 import ScheduleControls      from './components/Schedule/ScheduleControls';
@@ -60,21 +59,22 @@ class App extends Component {
     }
     // when button is clicked
     _create_events(w) {
-       let rows_copy = this.state.rows.slice();
-       
-       rows_copy = rows_copy.map(row => {
+        let rows_copy = this.state.rows.slice();
+
+        rows_copy = rows_copy.map(row => {
             row.events = [...row.events, ...row.selected_ranges];
             row.selected_ranges = [];
-       });
+            return row;
+        });
 
-       this.setState((prev_state, props) => {
-        rows:rows_copy
-       }); 
+        this.setState({
+            rows:rows_copy
+        }); 
     }
     _handle_ranges(data) {
         //add to new selected_ranges state array, make sure we tag it with the row id
+        console.log('data',data);
         this.setState((prev_state,props) => {
-            console.log('called');
             let rows_copy = prev_state.rows.slice();
             let found_row = _.find(rows_copy, row => row.id === data.id);
 
@@ -89,19 +89,13 @@ class App extends Component {
         this.setState((prev_state, props) => {
             let event_range = data.range;
             let rows_copy = this.state.rows.slice();
-            const new_rows = rows_copy.map(row => {
-                row.events = _.filter(row.events, event => {
-                    if(row.id === data.id) {
-                        return !(event_range.start === event.start && event_range.end === event.end);    
-                    } else {
-                        return event;
-                    }
-                    
-                })
-                return row;
-            });
+            
+            let row = _.find(rows_copy, row => row.id === data.id);
+            row.events = _.filter(row.events, event => {
+                return !(event_range.start === event.start && event_range.end === event.end);        
+            })
             return {
-                rows: new_rows
+                rows: rows_copy
             }
         });
     }
@@ -117,7 +111,7 @@ class App extends Component {
 
     render() {
         const { rows, month } = this.state;
-        const s = {"margin-left":"100px", "margin-right":"100px","margin-top":"50px"}    
+        const s = {"marginLeft":"100px", "marginRight":"100px","marginTop":"50px"}    
         return (
             <div className="" style={s}>
                 <ScheduleControls month={month.format('MMM YYYY')} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
