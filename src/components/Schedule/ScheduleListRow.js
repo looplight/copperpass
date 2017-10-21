@@ -4,7 +4,7 @@ import ScheduleListDay 		 from './ScheduleListDay';
 import ReactDOM 			 from 'react-dom';
 import _ 					 from 'lodash';
 import shallowEqual 		 from 'shallowequal'
-
+import deep from 'deep-equal';
 const find_range = (date, props) => {
 	if(!props.row.events || !props.row.events.length) return false;	
 
@@ -50,16 +50,24 @@ class ScheduleListRow extends React.PureComponent {
 	}
 
 	componentWillUnmount() {
-	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);		
+	    document.removeEventListener('mouseup', this.handle_click_outside.bind(this), true);
 	}
 	shouldComponentUpdate(nextProps, nextState, nextContext) {
-		return !shallowEqual(nextProps.row,this.props.row) || this.state.is_mouse_down !== nextState.is_mouse_down || !shallowEqual( _.map(nextState.days, 'is_selected'), _.map(this.state.days, 'is_selected'));
+		if(this.props.row.id === 1) {
+
+		}
+		//return true;
+		return !shallowEqual(nextProps.row, this.props.row) || this.state.is_mouse_down !== nextState.is_mouse_down || !shallowEqual( _.map(nextState.days, 'is_selected'), _.map(this.state.days, 'is_selected')) || !shallowEqual( _.map(nextState.days, 'date'), _.map(this.state.days, 'date'));
 	}
 	componentWillReceiveProps(nextProps) {
-		this.setState({
-			//events: this.props.row.events,
-			days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
-		});
+			this.setState({
+				//events: this.props.row.events,
+				days: this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges)
+			});
+		//if(JSON.stringify(this.props) !== JSON.stringify(nextProps)) {
+			
+		//}
+
 	}
 
 	handle_click_outside(event) {
@@ -298,6 +306,7 @@ class ScheduleListRow extends React.PureComponent {
 	};
 
   	render() {
+  		console.log('render', this.props.row.id);
   		//const d = this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges);
   		const days = this.state.days.map((day) => {
   			return <ScheduleListDay 

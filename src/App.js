@@ -59,6 +59,7 @@ class App extends Component {
     }
     // when button is clicked
     _create_events(w) {
+        //let rows_copy = _.cloneDeep(this.state.rows);
         let rows_copy = this.state.rows.slice();
 
         rows_copy = rows_copy.map(row => {
@@ -75,7 +76,8 @@ class App extends Component {
         //add to new selected_ranges state array, make sure we tag it with the row id
         console.log('data',data);
         this.setState((prev_state,props) => {
-            let rows_copy = prev_state.rows.slice();
+            //let rows_copy = _.cloneDeep(prev_state.rows);
+            let rows_copy = this.state.rows.slice();
             let found_row = _.find(rows_copy, row => row.id === data.id);
 
             found_row.selected_ranges = data.ranges;
@@ -88,8 +90,8 @@ class App extends Component {
     _event_click(data) {
         this.setState((prev_state, props) => {
             let event_range = data.range;
+            //let rows_copy = _.cloneDeep(this.state.rows);
             let rows_copy = this.state.rows.slice();
-            
             let row = _.find(rows_copy, row => row.id === data.id);
             row.events = _.filter(row.events, event => {
                 return !(event_range.start === event.start && event_range.end === event.end);        
