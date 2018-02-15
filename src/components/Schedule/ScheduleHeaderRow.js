@@ -4,8 +4,8 @@ import moment from 'moment';
 const build_header = (today) => {
 	let day_name;
 	let header_columns = [];
-
-	for(let i = 0; i < 37; i++) {
+	const days_in_month = today.daysInMonth();
+	for(let i = 0; i < /*37*/days_in_month; i++) {
 		day_name = moment(today).add(i, 'days').format('ddd').toUpperCase();
 		let header_row = <th className="text-center spacing" key={i}>{day_name.slice(0,1)}</th>;
 		header_columns.push(header_row);

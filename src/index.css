@@ -10,19 +10,32 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+
 table{
     table-layout: fixed;
     width: 100%;
-
 }
+
 table td {
   font-size:0.8em;
   border-bottom:30px solid #eceeef;
+  /*min-width: 35px;*/
+  text-align: center;
+  padding: 10px 3px;
+  /*display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;*/
 }
 
 table th {
   font-size:0.8em;
   border-bottom:30px solid #eceeef;
+  /*min-width: 35px;*/
+  text-align: center;
+  padding: 10px 3px;
+  /*display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;*/
 }
 .default-cursor {
   cursor:default;
@@ -46,6 +59,7 @@ table th {
 
     color: #FFFFFF;
 }
+
 .is-outside {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAABZJREFUCB1jYEADmzdv/o8iRA0BoIEAKngPeSAlnXcAAAAASUVORK5CYII=')
   
@@ -59,4 +73,28 @@ table th {
     #465298 10px,
     #465298 20px
   );
+}
+/*mobile*/
+@media screen and (max-width: 1024px) {
+  table {
+    width: 100%;
+    min-width: 250px;
+  }
+
+  table tr {
+    border:1px solid black;
+    border-collapse: collapse;
+  }
+
+  table td {
+    width: calc(100% / 5);
+    display: inline-block;
+    border-bottom:0px;
+  }
+
+  table thead {
+    display: none;
+    border-bottom:0px;
+  }
+  .separator { height: 100px; }
 }

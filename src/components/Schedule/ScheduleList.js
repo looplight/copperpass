@@ -7,7 +7,7 @@ const ScheduleList = ({rows, today, update, event_click}) => {
 		update(data);
 	}
 	return (
-		<table className="table schedule unselectable">
+		<table className="schedule unselectable">
 			<thead className="thead-inverse">
 				<ScheduleHeaderRow today={today}/>
 			</thead>				

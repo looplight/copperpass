@@ -19,7 +19,7 @@ class Schedule extends Component {
 
   render() {
     return (
-      <div>
+      <div className="">
         <ScheduleList
           rows={this.props.rows}
           today={this.props.today}

@@ -113,9 +113,9 @@ class App extends Component {
 
     render() {
         const { rows, month } = this.state;
-        const s = {"marginLeft":"100px", "marginRight":"100px","marginTop":"50px"}    
+        const s = {"marginLeft":"100px", "marginRight":"0px","marginTop":"50px"}    
         return (
-            <div className="" style={s}>
+            <div className="">
                 <ScheduleControls month={month.format('MMM YYYY')} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
                 <Schedule rows={rows} today={month} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
                 <Button handle_mouse_down={this._create_events.bind(this)}/>

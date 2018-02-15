@@ -1,4 +1,9 @@
+
+[ ] remove container and make fullscreen
+[ ] add header
+[ ] testa weekly slider
 [ ] Draging on selected event incorrectly sets selected state on row
+
 
 IMPORTANT!
 [x] Sometimes the ranges sent back to 'Update' sets start and/or end to undefined, happend when startin on 4 5 6 and/or ending on 7
@@ -28,7 +33,9 @@ IMPORTANT!
 [x] is_in_range should not care about order of "start" and "end"
 [x] Calendar controls
 [ ] Fixed number of days (spacers) so that calendar doesn’t jump around when switching date
-    [ ] Always render 5 weeks worht of cells [ ] Connect notes to an event
+[ ] Render 42 days
+[ ] Always start on a monday, fill in days from previous month untill we reach first in selected month. 'Filler days' should not be selectable
+[ ] Connect notes to an event
 [ ] Pending/aproved(true/false) events (event status)
 
 
