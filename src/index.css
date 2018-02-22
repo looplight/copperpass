@@ -52,14 +52,18 @@ table th {
    background-color: #F5F4EE;
 }
 .selected {
-	background-color: #4A96AD;
+  
+	background-color:#89c1d2 ; /*old blue #4A96AD*/
   color: #FFFFFF;
-  border-color: #4A96AD;
+  border-left-color: #89c1d2;
+  border-right-color: #89c1d2;
 }
 
 .event {
-    background-color: #f0ad4e/*#7D1935*/;
-    border-color: #f0ad4e;
+  
+    background-color:#ffcb82 /*old orange #f0ad4e*/;
+    border-left-color: #ffcb82;
+    border-right-color: #ffcb82;
     color: #FFFFFF;
 }
 
