@@ -103,11 +103,11 @@ class App extends Component {
     }
 
     _on_previous() {
-        this.setState({month:this.state.month.subtract(1,'month').startOf('month')})
+        this.setState({month:this.state.month.subtract(1,'week').startOf('week')})
     }
 
     _on_next() {
-        this.setState({month:this.state.month.add(1,'month')})
+        this.setState({month:this.state.month.add(1,'week')})
     }
 
 

@@ -8,9 +8,7 @@ const ScheduleList = ({rows, today, update, event_click}) => {
 	}
 	return (
 		<table className="schedule unselectable">
-			<thead className="thead-inverse">
 				<ScheduleHeaderRow today={today}/>
-			</thead>				
 			<tbody>
 				{rows.map(row => {
 					return <ScheduleListRow

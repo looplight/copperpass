@@ -102,7 +102,7 @@ class ScheduleListRow extends React.PureComponent {
 			return !!test;
 		}		
 		// id day is in an event range, mark it as an event with correct class and event id (?)
-		const days_in_month = today.daysInMonth();
+		const days_in_month = 35// today.daysInMonth();
 		const days = [];
 		const previous_month_days = 0;
 		for(let i = 0; i < /*37*/days_in_month; i++) {
@@ -199,7 +199,7 @@ class ScheduleListRow extends React.PureComponent {
 		this.setState((prev_state, props) => {
 			const days_copy = _.cloneDeep(prev_state.days);
 			const found = days_copy.find((day) => {
-				return day.display_text === display_text;
+				return day.date === date;
 			});
 			if(!found) return prev_state;
 			if(found.is_event) {
@@ -211,7 +211,7 @@ class ScheduleListRow extends React.PureComponent {
 					is_mouse_down:true,
 					highest_selected_day:date,
 					start_select_date: date,
-					clicked_on_event:true
+					is_starting_on_event:true
 
 				}				
 			} 
@@ -221,7 +221,7 @@ class ScheduleListRow extends React.PureComponent {
 				is_mouse_down:true,
 				is_starting_on_selected_day: !found.is_selected, // invert it again so that we get the orignal state of the selection
 				start_select_date:date,
-				clicked_on_event:false
+				is_starting_on_event:false
 			}
 		});		
 	};
@@ -231,11 +231,11 @@ class ScheduleListRow extends React.PureComponent {
 		this.setState((prev_state, props) => {
 			const days_copy = _.cloneDeep(prev_state.days);
 			const found = days_copy.find((day) => {
-				return day.display_text === display_text;
+				return day.date === date;
 			});
 
 			// select in the 'right' direction
-			if(!this.state.is_starting_on_selected_day && !this.state.clicked_on_event) {
+			if(!this.state.is_starting_on_selected_day && !this.state.is_starting_on_event) {
 				const highest_date = moment(found.date).isAfter(moment(this.state.highest_selected_day || this.state.start_select_date)) ? found.date : (this.state.highest_selected_day || this.state.start_select_date);
 				const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
 				
@@ -273,7 +273,7 @@ class ScheduleListRow extends React.PureComponent {
 					days: days_copy,
 					highest_selected_day: highest_date,
 					lowest_selected_day:lowest_date,
-					clicked_on_event: false
+					is_starting_on_event: false
 				}				
 			} else {
 				found.is_selected = false;
@@ -311,7 +311,7 @@ class ScheduleListRow extends React.PureComponent {
 	};
 
   	render() {
-  		console.log('render', this.props.row.id);
+  		//console.log('render', this.props.row.id);
   		//const d = this._build_columns(this.props.today, this.props.row.events, this.props.row.selected_ranges);
   		const days = this.state.days.map((day) => {
   			return <ScheduleListDay 

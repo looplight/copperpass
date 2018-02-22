@@ -1,4 +1,11 @@
-[ ] "Fixed position" when selecting next and previous week (look at fc)
+[x] When finding clicked or entered day, find by date instead of display_text
+[ ] drunk with sleep: an event day should know what range it is on so that we do not have to find the range on click. implent event id (???)
+[x] "Fixed position" when selecting next and previous week (look at fc)
+[x] Now that one page can show days from two different months, let's group header in month sections
+[ ] Experiment with not having datenumber on every td (maybe just have them in the header)
+[ ] FC decides how many rows ro render depending on how many fit the size of the window... look into this
+[ ] How do we handle the case of selecting ranges and swtiching between weeks. Kepp ranges selected or deslect?
+[ ] Better distinction between "connecting" events
 [ ] Make hover fade in, try different colors
 [ ] Do not call click_event_handler when mouse_up outside of event (after clicking on an event) ???
 [ ] Add header
