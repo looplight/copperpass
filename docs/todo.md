@@ -1,3 +1,5 @@
+[ Do not change border color on the outermost selected days or evendays
+[x] Set bolder color to selected and event colors when days are selected or there is an event
 [x] When finding clicked or entered day, find by date instead of display_text
 [ ] drunk with sleep: an event day should know what range it is on so that we do not have to find the range on click. implent event id (???)
 [x] "Fixed position" when selecting next and previous week (look at fc)

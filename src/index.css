@@ -18,7 +18,9 @@ table{
 
 table td {
   font-size:0.8em;
-  border-bottom:30px solid #eceeef;
+  border-bottom:1px solid #eceeef;
+  border-left: 1px solid #eceeef;
+  border-right: 1px solid #eceeef;
   /*min-width: 35px;*/
   text-align: center;
   padding: 10px 3px;
@@ -52,11 +54,12 @@ table th {
 .selected {
 	background-color: #4A96AD;
   color: #FFFFFF;
+  border-color: #4A96AD;
 }
 
 .event {
     background-color: #f0ad4e/*#7D1935*/;
-
+    border-color: #f0ad4e;
     color: #FFFFFF;
 }
 
