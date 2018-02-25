@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event, handle_mouse_down, handle_mouse_enter, handle_mouse_up, handle_mouse_leave,is_outside_of_current_month}) => {
+const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event, handle_mouse_down, handle_mouse_enter, handle_mouse_up, handle_mouse_leave,is_outside_of_current_month, is_user_info}) => {
 	const _handle_mouse_down = (event) => {
 		handle_mouse_down(display_text, date, event);
 	};
@@ -21,9 +21,17 @@ const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event,
 		return className;
 	};
 
+	const set_colspan = () => {
+		let colspan = 0;
+		if(is_user_info) colspan = 5;
+		return colspan;
+	}
 	
 	const className = build_class();
-	return <td data-date={date}  className={className} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up} onMouseLeave={handle_mouse_leave}>&nbsp;</td>;
+	const colspan   = set_colspan();
+	
+	console.log('colspan is', colspan);
+	return <td data-date={date}  className={className} colSpan={colspan} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up} onMouseLeave={handle_mouse_leave}>&nbsp;</td>;
 };
 
 export default ScheduleListDay;

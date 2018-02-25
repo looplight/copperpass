@@ -1,4 +1,8 @@
-[ Do not change border color on the outermost selected days or evendays
+[ ] Underline date in header for the current selected/hovering day
+[ ] We can select days even though there is an event there. This couses us to overwrite eventdays with new selections.
+[ ] Text on events?
+[ ] Highlight either current     week, day or both
+[ ] Do not change border color on the outermost selected days or evendays
 [x] Set bolder color to selected and event colors when days are selected or there is an event
 [x] When finding clicked or entered day, find by date instead of display_text
 [ ] drunk with sleep: an event day should know what range it is on so that we do not have to find the range on click. implent event id (???)
@@ -35,7 +39,6 @@ IMPORTANT!
 [x] is_in_range should not care about order of "start" and "end"
 [x] Calendar controls
 [ ] Fixed number of days (spacers) so that calendar doesn’t jump around when switching date
-[ ] Render 42 days
 [ ] Always start on a monday, fill in days from previous month untill we reach first in selected month. 'Filler days' should not be selectable
 [ ] Connect notes to an event
 [ ] Pending/aproved(true/false) events (event status)

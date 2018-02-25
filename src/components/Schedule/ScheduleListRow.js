@@ -102,11 +102,11 @@ class ScheduleListRow extends React.PureComponent {
 			return !!test;
 		}		
 		// id day is in an event range, mark it as an event with correct class and event id (?)
-		const days_in_month = 35// today.daysInMonth();
+		const days_in_month = 36// today.daysInMonth();
 		const days = [];
 		const previous_month_days = 0;
 		for(let i = 0; i < /*37*/days_in_month; i++) {
-			if(i < previous_month_days) {
+			/*if(i < previous_month_days) {
 				days.push({
 					id:i,
 					//is_weekend:true,
@@ -129,13 +129,20 @@ class ScheduleListRow extends React.PureComponent {
 					handle_mouse_down: this._handle_mouse_down,
 					handle_mouse_up: this._handle_mouse_up,					
 				})		
-			}	
+			}*/	
 			const day = moment(today).add(i - previous_month_days, 'day');
 			//let full_day_text = day.format('YYYY-MM-DD');
 			const day_text = day.format('D');
 
+			if(i === 0) {
+				days.push({
+					id:i,
+					display_text:'woohoo',
+					is_user_info: true					
+				})
+			}
 			//TODO(daniel): refactor out this duplication
-			if(is_weekend(day) && i > previous_month_days && i < days_in_month + previous_month_days ) {
+			if(is_weekend(day) && i > previous_month_days && i < days_in_month + previous_month_days && i !== 0) {
 				days.push({
 					id:i,
 					is_weekend:true,
@@ -147,9 +154,10 @@ class ScheduleListRow extends React.PureComponent {
 					handle_mouse_enter:this._handle_mouse_enter,
 					handle_mouse_down: this._handle_mouse_down,
 					handle_mouse_up: this._handle_mouse_up,
+				
 					
 				});
-			} else if (i >= previous_month_days && i < days_in_month + previous_month_days){
+			} else if (i >= previous_month_days && i < days_in_month + previous_month_days && i !== 0){
 				days.push({
 					id:i,
 					is_weekend:false,
@@ -326,6 +334,7 @@ class ScheduleListRow extends React.PureComponent {
 	  			handle_mouse_up={day.handle_mouse_up}
 	  			handle_mouse_leave={day.handle_mouse_leave}
 	  			is_outside_of_current_month={day.is_outside_of_current_month}
+	  			is_user_info= {day.is_user_info}
 
   			/>
   		});

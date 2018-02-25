@@ -4,6 +4,7 @@ import _                     from 'lodash';
 import Schedule              from './components/Schedule/Schedule';
 import ScheduleControls      from './components/Schedule/ScheduleControls';
 import Button                from './components/Common/Button';
+import Navbar                from './components/Navbar/Navbar';
 class App extends Component {
     constructor(props) {
         super(props);
@@ -115,10 +116,17 @@ class App extends Component {
         const { rows, month } = this.state;
         const s = {"marginLeft":"100px", "marginRight":"0px","marginTop":"50px"}    
         return (
-            <div className="">
-                <ScheduleControls month={month.format('MMM YYYY')} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
-                <Schedule rows={rows} today={month} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
-                <Button handle_mouse_down={this._create_events.bind(this)}/>
+            <div className="">                
+                <Navbar />
+                <br />
+                <br />
+                <br />
+                <div className="container">  
+                    <ScheduleControls month={month.format('MMM YYYY')} on_previous={this._on_previous.bind(this)} on_next={this._on_next.bind(this)}/>
+                    <Schedule rows={rows} today={month} update={this._handle_ranges} event_click={this._event_click.bind(this)}/>
+                    <br />
+                    <Button handle_mouse_down={this._create_events.bind(this)}/>
+                </div>
             </div>)
     }
 }

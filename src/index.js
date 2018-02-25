@@ -1,7 +1,7 @@
 import React 	from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './styles/materialize/css/materialize.min.css';
 import './index.css';
 /*
 const rows = [{id:1, title:'Daniel', subtitle:'code monkii 1', events: [

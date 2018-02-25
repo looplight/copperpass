@@ -1,3 +1,8 @@
+
+
+/*
+new inverse th color: #6a7175
+*/
 body {
   margin: 0;
   padding: 0;
@@ -10,7 +15,11 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
-
+.container {
+  margin: 0 auto;
+  max-width: 1920px;
+  width: 90%;
+}
 table{
     table-layout: fixed;
     width: 100%;
@@ -24,6 +33,7 @@ table td {
   /*min-width: 35px;*/
   text-align: center;
   padding: 10px 3px;
+  border-radius: 0px;
   /*display: inline-block;
   white-space: nowrap;
   overflow: hidden;*/
@@ -31,10 +41,13 @@ table td {
 
 table th {
   font-size:0.8em;
+  background-color:#3c414e ; /*old blue #607d8a*/
   
+  color: #FFFFFF;  
   /*min-width: 35px;*/
   text-align: center;
   padding: 10px 3px;
+  border-radius: 0px;
   /*display: inline-block;
   white-space: nowrap;
   overflow: hidden;*/
@@ -49,7 +62,7 @@ table th {
    background-color: #ccc;
 }
 .weekend {
-   background-color: #F5F4EE;
+   background-color: #eaeaea30 /*old color #F5F4EE;*/
 }
 .selected {
   
@@ -61,9 +74,9 @@ table th {
 
 .event {
   
-    background-color:#ffcb82 /*old orange #f0ad4e*/;
-    border-left-color: #ffcb82;
-    border-right-color: #ffcb82;
+    background-color:#ecd1d1; /*old orange #f0ad4e*/;
+    border-left-color: #ecd1d1;
+    border-right-color: #ecd1d1;
     color: #FFFFFF;
 }
 
