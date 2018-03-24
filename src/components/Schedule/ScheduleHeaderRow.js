@@ -16,8 +16,8 @@ const build_header_month = (today) => {
 	const header_columns = [];
 
 	for(let i = 0; i < 6; i++) {
-		const first  = moment(today).add(i, 'weeks').format('MMM');
-		const second = moment(today).add(i+1, 'weeks').subtract(1, 'days').format('MMM');
+		const first  = moment(today).add(i-1, 'weeks').format('MMM');
+		const second = moment(today).add(i, 'weeks').subtract(1, 'days').format('MMM');
 		let month_label = first === second 
 			? first
 			: `${first} - ${second}`;
@@ -40,7 +40,7 @@ const build_header_days = (today) => {
 	for(let i = 0; i < 36; i++) {
 
 		const colspan = i === 0 ? 5 : 0; 
-		let display_text = i === 0 ? 'User' : moment(today).add(i, 'days').format('D');
+		let display_text = i === 0 ? 'Team' : moment(today).add(i-1, 'days').format('D');
 		const header_row = (
 		<th className="text-center spacing" colSpan={colspan}>{display_text}</th>)
 
