@@ -16,8 +16,8 @@ const build_header_month = (today) => {
 	const header_columns = [];
 
 	for(let i = 0; i < 6; i++) {
-		const first  = moment(today).add(i-1, 'weeks').format('MMM');
-		const second = moment(today).add(i, 'weeks').subtract(1, 'days').format('MMM');
+		const first  = moment(today).add(i, 'weeks').format('MMM');
+		const second = moment(today).add(i+1, 'weeks').subtract(1, 'days').format('MMM');
 		let month_label = first === second 
 			? first
 			: `${first} - ${second}`;
