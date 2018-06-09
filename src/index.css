@@ -68,7 +68,7 @@ table th {
 }
 .selected {
   
-	background-color:#89c1d2 ; /*old blue #4A96AD*/
+	background-color:#89c1d2 ; /*complementary blue: #d1dfec... old blue*/. 
   color: #FFFFFF;
   border-left-color: #89c1d2;
   border-right-color: #89c1d2;

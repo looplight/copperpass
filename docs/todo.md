@@ -1,8 +1,8 @@
-[ ] BUG! Dragselecting on first of march selects user cell
+[x] BUG! Dragselecting on first of march selects user cell
 [ ] Icons in header
 [ ] Searchbar in header
 [ ] Better logo-font in header
-[ ] jan/feb bug when selecting right most days (days at the left most side also get selected)
+[x] jan/feb bug when selecting right most days (days at the left most side also get selected)
 [ ] Underline date in header for the current selected/hovering day
 [ ] We can select days even though there is an event there. This couses us to overwrite eventdays with new selections.
 [ ] Text on events?
@@ -22,7 +22,7 @@
 [ ] Add header
 [x] Test weekly slider
 [x] Draging on selected event incorrectly sets selected state on row
-[x] remove container and make fullscreen
+[ ] remove container and make fullscreen (maybe)
 IMPORTANT!
 [x] Sometimes the ranges sent back to 'Update' sets start and/or end to undefined, happend when startin on 4 5 6 and/or ending on 7
 [ ] should ne a bug in _get_selected_ranges

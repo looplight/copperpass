@@ -75,7 +75,6 @@ class App extends Component {
     }
     _handle_ranges(data) {
         //add to new selected_ranges state array, make sure we tag it with the row id
-        console.log('data',data);
         this.setState((prev_state,props) => {
             //let rows_copy = _.cloneDeep(prev_state.rows);
             let rows_copy = this.state.rows.slice();

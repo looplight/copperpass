@@ -30,7 +30,6 @@ const ScheduleListDay = ({display_text, date, is_weekend, is_selected, is_event,
 	const className = build_class();
 	const colspan   = set_colspan();
 	
-	console.log('colspan is', colspan);
 	return <td data-date={date}  className={className} colSpan={colspan} onMouseDown={_handle_mouse_down} onMouseEnter={_handle_mouse_enter} onMouseUp={_handle_mouse_up} onMouseLeave={handle_mouse_leave}>&nbsp;</td>;
 };
 

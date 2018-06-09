@@ -102,7 +102,7 @@ class ScheduleListRow extends React.PureComponent {
 			return !!test;
 		}		
 		// id day is in an event range, mark it as an event with correct class and event id (?)
-		const days_in_month = 36// today.daysInMonth();
+		const days_in_month = 35// today.daysInMonth();
 		const days = [];
 		const previous_month_days = 0;
 		for(let i = 0; i < /*37*/days_in_month; i++) {
@@ -130,7 +130,7 @@ class ScheduleListRow extends React.PureComponent {
 					handle_mouse_up: this._handle_mouse_up,					
 				})		
 			}*/	
-			const day = moment(today).add(i - previous_month_days, 'day');
+			const day = moment(today).add(i - 1, 'day');
 			//let full_day_text = day.format('YYYY-MM-DD');
 			const day_text = day.format('D');
 
@@ -140,12 +140,10 @@ class ScheduleListRow extends React.PureComponent {
 					display_text:'woohoo',
 					is_user_info: true					
 				})
-			}
-			//TODO(daniel): refactor out this duplication
-			if(is_weekend(day) && i > previous_month_days && i < days_in_month + previous_month_days && i !== 0) {
+			} else {
 				days.push({
 					id:i,
-					is_weekend:true,
+					is_weekend:is_weekend(day),
 					display_text:day_text,
 					date: day.format('YYYY-MM-DD'),
 					is_selected:is_selected(day) && !is_event(day),
@@ -153,25 +151,9 @@ class ScheduleListRow extends React.PureComponent {
 					handle_mouse_click:this._handle_mouse_down,
 					handle_mouse_enter:this._handle_mouse_enter,
 					handle_mouse_down: this._handle_mouse_down,
-					handle_mouse_up: this._handle_mouse_up,
-				
-					
-				});
-			} else if (i >= previous_month_days && i < days_in_month + previous_month_days && i !== 0){
-				days.push({
-					id:i,
-					is_weekend:false,
-					display_text:day_text,
-					date: day.format('YYYY-MM-DD'),
-					is_selected:is_selected(day) && !is_event(day),
-					is_event: is_event(day),
-					handle_mouse_click:this._handle_mouse_down,
-					handle_mouse_enter:this._handle_mouse_enter,
-					handle_mouse_leave:this._handle_mouse_leave,
-					handle_mouse_down: this._handle_mouse_down,
-					handle_mouse_up: this._handle_mouse_up,
-				});
-			}
+					handle_mouse_up: this._handle_mouse_up,		
+				});					
+			}	
 		}
 		return days;		
 	}
@@ -248,10 +230,11 @@ class ScheduleListRow extends React.PureComponent {
 				const lowest_date = moment(found.date).isBefore(moment(this.state.lowest_selected_day  || this.state.start_select_date)) ? found.date : (this.state.lowest_selected_day || this.state.start_select_date);
 				
 				const days_between_start_and_max = _.filter(days_copy, day => {
-					return !day.is_outside_of_current_month && (is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {start:this.state.start_select_date ,end:lowest_date}));
+					return is_in_range(day, {start:this.state.start_select_date ,end:highest_date}) || is_in_range(day, {start:this.state.start_select_date ,end:lowest_date});
 				})
+
 				const to_select = _.filter(days_between_start_and_max, day => {
-					return is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {start:this.state.start_select_date, end:found.date})
+					return !day.is_user_info && (is_in_range(day, {start:this.state.start_select_date, end:found.date}) || is_in_range(day, {start:this.state.start_select_date, end:found.date}))
 				})
 				const diff = _.filter(days_between_start_and_max, day => {
 					return !is_in_range(day, {start:this.state.start_select_date, end:found.date})
@@ -260,7 +243,6 @@ class ScheduleListRow extends React.PureComponent {
 				_.each(diff, day => {
 					day.is_selected = false
 				});
-				
 				_.each(to_select, day => {
 					day.is_selected = true
 				});
@@ -333,7 +315,6 @@ class ScheduleListRow extends React.PureComponent {
 	  			handle_mouse_enter={day.handle_mouse_enter}
 	  			handle_mouse_up={day.handle_mouse_up}
 	  			handle_mouse_leave={day.handle_mouse_leave}
-	  			is_outside_of_current_month={day.is_outside_of_current_month}
 	  			is_user_info= {day.is_user_info}
 
   			/>

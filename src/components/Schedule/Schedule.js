@@ -7,14 +7,8 @@ class Schedule extends Component {
   }
   
   componentWillMount() {
-    console.log('Soon we are mounted!');
   }  
   componentDidMount() {
-    console.log('Mounted!');
-  }
-
-  _test() {
-
   }
 
   render() {
